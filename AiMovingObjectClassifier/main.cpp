@@ -7,14 +7,8 @@
 //
 
 #include <iostream>
-//#include <Eigen/Dense>
 #include <opencv2/opencv.hpp>
-//#include <opencv2/core/eigen.hpp>
-//#include <opencv/highgui.h>
 #include <opencv/cv.h>
-//#include "user_gui.hpp"
-//#include "graphics_display.hpp"
-//#include "video_feed.hpp"
 #include "detectionloop.hpp"
 #include "testcases.hpp"
 #include <string>
@@ -31,13 +25,6 @@ int main(int argc, const char * argv[]) {
             return 0;
         }
     }
-//    const std::string name_original = "Test original window";
-//    const std::string name_gray = "Test gray window";
-//    const std::string name_diff = "Test diff window";
-//    const std::string name_threshold = "Test threshold window";
-//    const std::string name_blur = "Test blur window";
-//    const std::string name_subsample = "Test subsample window";
-//    const std::string name_reszie_subsample = "Test resized subsample window";
     
     std::cout<<"\n Display windows: \n";
     std::cout<<"    o = toggle original frame\n";

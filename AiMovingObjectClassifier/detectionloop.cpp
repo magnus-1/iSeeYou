@@ -14,6 +14,9 @@
 #include "imagestorage.hpp"
 #include "conv_net.hpp"
 
+
+// this is the mainloop, and ties the diffrent components together.
+// readframe -> extract_moving_objects -> areaTracker -> storage -> learningModule -> repeat
 void mainLoop()
 {
     const std::string name_original = "Test original window";
@@ -36,8 +39,7 @@ void mainLoop()
 #define FRAME_HIGHT 480
 #define FRAME_SAMPLE_WIDTH 32
 #define FRAME_SAMPLE_HIGHT 32
-    //    camera.set(CV_CAP_PROP_FRAME_WIDTH, FRAME_WIDTH);
-    //    camera.set(CV_CAP_PROP_FRAME_HEIGHT, FRAME_HIGHT);
+
     VideoFeed feed;
     feed.openCameraFeed(FRAME_WIDTH, FRAME_HIGHT);
     
@@ -65,38 +67,40 @@ void mainLoop()
         
         // this will detect all moving objects and return a vector with all the areas
         auto objects = extract_moving_objects(currentSample, lastSample, settings, 6);
+        // filters out all areas smaller then 50 by 50
         filterDetectionArea(objects, 50, 50);
+        
+        // update the areatracking with the new areas, generating regions
         areaTracker.updateDetectedObjects(frameCount, objects);
+        // the output frame is the one we draw on , so let it be a copy
         currentSample->frame.copyTo(outputFrame);
         paintTrackingRects(outputFrame, areaTracker.getTrackedAreas(), frameCount);
-//        if (areaTracker.getTrackedAreas().empty() == false) {
-//            auto detect = areaTracker.getTrackedAreas().back();
-//            storage.storeframe(currentSample->frame, detect);
-//        }
+        
+        // storage converts all relevent regions and convert them into a 32 by 32 by 3 image
         storage.storeframe(currentSample->frame, areaTracker.getTrackedAreas(), frameCount, 0);
-        if(storage.bufferIsFull())
-        {
+        if(storage.bufferIsFull()){
             storage.fillMosaic(mosaic, 10, 10);
         }
         
-//        test_eigen_opencv(&storage);
+        // start the forward pass and train on it
         learningModule.trainlastImg();
         
         storage.fillEigenTest(eigenTest);
         
         display_window(true, name_original, outputFrame);
-        
         display_window(true, name_mosaic, mosaic);
-        
         display_window(true, name_eigen_Test, eigenTest);
         
+        // user controls
         key = cv::waitKey(10);
         runloop = handleInput(key, settings);
         
+        // make sure that we do not have any duplicates
         areaTracker.purgeDublicate();
         struct frame_sample* tmp = currentSample;
         currentSample = lastSample;
         lastSample = tmp;
+        // we do not want to track regions forever.
         if((frameCount + 1) % 20 == 0){
             areaTracker.purgeStaleAreas(28, frameCount);
         }
