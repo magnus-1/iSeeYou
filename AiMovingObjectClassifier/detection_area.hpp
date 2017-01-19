@@ -12,19 +12,14 @@
 #include <vector>
 
 
-
-//namespace detection { namespace details {
-////    struct int width, int hight {
-////        int width = 0;
-////        int hight = 0;
-////        int width, int hight(int w,int h) : width(w), hight(h) {}
-////    };
-//} };
-//typedef struct detection::details::int width, int hight int width, int hight;
-
+// any area that is smaller then width and hight gets removed
 void filterDetectionArea(std::vector<cv::Rect>& objects,int width, int hight);
+
+// this class represent the actual object we are trying to classify and follow,it has the needed metadata about it like regionId and classid. and when it was detected and last updated
 class DetectedArea
 {
+private:
+    int m_classId = -1;
 public:
     int frameDetectionId; // when this area was detected (at what frame)
     int prevFrameId = 0;
@@ -40,6 +35,14 @@ public:
             prevFrameId = frameDetectionId;
             frameDetectionId = frameId;
         }
+    }
+    
+    void setNewClassId(int classId) {
+        m_classId = classId;
+    }
+    
+    int getClassId() {
+        return m_classId;
     }
 };
 

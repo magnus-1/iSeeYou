@@ -34,18 +34,6 @@ std::vector<cv::Rect> detectMovingObjects(cv::Mat& threshold,int maxObjects) {
     return allObjects;
 }
 
-//void filterDetectionArea(std::vector<cv::Rect>& objects,int width, int hight)
-//{
-//    objects.erase( std::remove_if(std::begin(objects),
-//                                  std::end(objects),
-//                                  [&width,&hight](cv::Rect r){
-//                                      return r.width < width || r.height < hight;
-//                                      
-//                                  }),std::end(objects));
-//    //    std::for_each(std::begin(objects), std::end(objects), [&limit])
-//}
-
-
 
 std::vector<cv::Rect> extract_moving_objects(struct frame_sample* currentframe,struct frame_sample* lastframe,struct display_settings& settings, int maxObjects)
 {

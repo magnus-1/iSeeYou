@@ -13,7 +13,7 @@
 #include "detection_area.hpp"
 
 
-
+// any area that is smaller then width and hight gets removed
 void filterDetectionArea(std::vector<cv::Rect>& objects, int width, int hight)
 {
     objects.erase( std::remove_if(std::begin(objects),
@@ -31,6 +31,7 @@ bool intersectingRegions(cv::Rect& area1,cv::Rect& area2)
     (abs(area1.y - area2.y) * 2 < (area1.height + area2.height));
 }
 
+// merge 2 regions, the one with the lowes id survives
 void mergeRegions(DetectedArea& obj1, DetectedArea& obj2)
 {
     if(obj1.regionId < obj2.regionId)
@@ -44,6 +45,7 @@ void mergeRegions(DetectedArea& obj1, DetectedArea& obj2)
     //        if(obj2.f)
 }
 
+// this structure is used to merge and check new areas against old regions
 struct AreaUpdateOnOverlapp {
     cv::Rect area;
     bool didOverlapp = false;
@@ -62,12 +64,6 @@ struct AreaUpdateOnOverlapp {
             return; // no overlapp
         }
         didOverlapp = true;
-        //            int dx = target.area.x - area.x;
-        //            int dy = target.area.y - area.y;
-        //            int overlappX = target.area.width - area.width - dx;
-        //            int overlappY = target.area.height - area.height - dy;
-        //            double ratio = (double)area.area()/target.area.area();
-        //            double ratio = (double)area.area()/target.area.area();
         double ratiox = (double)area.width/target.area.width;
         double ratioy = (double)area.height/target.area.height;
         //            double ratio = (double)area.area()/target.area.area();
@@ -82,8 +78,6 @@ struct AreaUpdateOnOverlapp {
             
             // update the target area
             target.updateFrameId(frameId);
-            //                target.prevFrameId = target.frameDetectionId;
-            //                target.frameDetectionId = frameId;
             target.area = area;
             target.isSubRegion = false;
             target.isSuperRegion = false;
@@ -110,29 +104,10 @@ void CameraAreaTracker::updateDetectedObjects(const int frameId,std::vector<cv::
     
     // naive overlapp check prototype
     for(auto& loc : movementLocation) {
-        //            auto startIter = std::lower_bound(std::begin(changeTracking),
-        //                                              std::end(changeTracking),
-        //                                              DetectedArea(frameId,loc),
-        //                                          [](const DetectedArea& a,const DetectedArea& myLoc){
-        //                                              return a.area.x + a.area.width < myLoc.area.x;
-        //                                          });
-        //            if(std::begin(changeTracking) < startIter ) {
-        //                startIter--;
-        //            }
-        //            auto endIter = std::upper_bound(startIter,
-        //                                        std::end(changeTracking),
-        //                                        DetectedArea(frameId,loc),
-        //                                        [](const DetectedArea& myLoc, const DetectedArea& b){
-        //                                            return myLoc.area.x + myLoc.area.width < b.area.x;
-        //                                        });
-        //
-        //
-        //            AreaUpdateOnOverlapp result = std::for_each(startIter, endIter, AreaUpdateOnOverlapp(frameId,loc));
         AreaUpdateOnOverlapp result = std::for_each(std::begin(changeTracking),std::end(changeTracking), AreaUpdateOnOverlapp(frameId,loc));
         
         if (result.didOverlapp && !(result.isSuperRegion || result.isSuperRegion)) {
             // good, we have already updated it
-            //std::cout<<"\nArea count = "<< changeTracking.size() << "\n";
             continue;
         }
         
