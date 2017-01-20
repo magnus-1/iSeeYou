@@ -24,13 +24,16 @@ void mainLoop()
     const std::string name_eigen_Test = "Test eigen test window";
     // storage test:
 //    ConvHyperParam<32, 3, 3, 3, 1,1>
+    // sets the hyperparm for the cnn
     ConvNet<
     ConvHyperParam<32, 3, 3, 3, 1,1>
     ,ConvHyperParam<32, 3, 3, 3, 1,1>
     ,ConvHyperParam<32, 3, 3, 3, 1,1>
     ,ConvHyperParam<32, 3, 3, 3, 1,0>
     > convNet;
+    // for now it randomize the weigth, add loading here
     convNet.randomizeAll();
+    // creates the learning module and set the convnet
     LearningModule<decltype(convNet)> learningModule(convNet);
     
     struct display_settings settings;
@@ -59,6 +62,7 @@ void mainLoop()
     cv::Mat outputFrame = cv::Mat::zeros(FRAME_WIDTH, FRAME_HIGHT, lastSample->frame.type());
     cv::Mat eigenTest = cv::Mat::zeros(32, 32, CV_32FC3);
     cv::Mat mosaic = cv::Mat::zeros(32*10, 32*10, lastSample->frame.type());
+    // connect storage
     learningModule.setStorage(&storage);
     int frameCount = 0;
     while (runloop) {

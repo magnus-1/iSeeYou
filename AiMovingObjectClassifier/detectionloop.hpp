@@ -8,6 +8,8 @@
 
 #ifndef detectionloop_hpp
 #define detectionloop_hpp
+
+// main loop for the program
 void mainLoop();
 
 #endif /* detectionloop_hpp */

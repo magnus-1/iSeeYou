@@ -17,6 +17,8 @@
 #include <vector>
 #include "detection_area.hpp"
 
+// This is the structure that holds the image to be processed
+// and its region id
 struct LabelImage {
     int regionId = -1;
     cv::Mat image = cv::Mat();
@@ -24,9 +26,12 @@ struct LabelImage {
 
 using LabelImage = struct LabelImage;
 
+
+// Object image is the storage class that holds the last N images
 class ObjectImages
 {
 //    std::vector<cv::Mat> imagebuffer;
+    // holds the resized images and its regionId
     std::vector<LabelImage> imagebuffer;
     
     const int max_size;
@@ -39,6 +44,17 @@ class ObjectImages
     cv::Mat eigenTest;
     cv::Mat eigenTest2;
 public:
+    
+    /**
+     Construct a StorageObject to hold labeld images
+
+     @param theregionId if storage is regionId specific otherwise use -1 or 0
+     @param maxSize the maximum number of images to store
+     @param storageDimH the hight dimensions
+     @param storageDimW the width dimensions
+     @param imageType the image type they are stored as
+     @return the storage obj
+     */
     ObjectImages(int theregionId ,const int maxSize,
                  const int storageDimH, const int storageDimW,int imageType) : regionId(theregionId), max_size(maxSize),imageDimH(storageDimH),imageDimW(storageDimW)
     {
@@ -55,26 +71,56 @@ private:
     
     void imageResize(const cv::Mat& srcframe, const cv::Rect objectLocation,cv::Mat& dstframe);
 public:
-    //std::vector<DetectedArea>
+
+    /**
+     stores resized image for area in the imagebuffer if it has been updated in the last frame -+ wiggle
     
-    // stores the area in the imagebuffer if it has been updated in the last
-    // frame -+ wiggle
+     @param frame the frame to extract image data from
+     @param detectAreas a vector of the current detected areas
+     @param frameId the current frame id ,
+     @param wiggle the range of frame id that should be trained on
+     */
     void storeframe(const cv::Mat& frame,
                     const std::vector<DetectedArea>& detectAreas,
                     const int frameId,const int wiggle);
     
+    
+    /**
+     store the resized image
+
+     @param frame the frame to extract image data from
+     @param detectArea e current detected areas
+     */
     void storeframe(const cv::Mat& frame,const DetectedArea& detectArea);
+    
+    
+    /**
+     This returns true if the buffer has completed one cycle (maxsize)
+
+     @return true if true =)
+     */
     bool bufferIsFull()
     {
         return madeTheLoop;
     }
     
+    
+    /**
+     filles the output image with all the stored  images in a grid
+
+     @param output the image
+     @param imageCols number of adjecent images
+     @param imageRows number of images vertecly
+     */
     void fillMosaic(cv::Mat& output,const int imageCols,const int imageRows);
     
-//    LabelImage getLastImg()
-//    {
-//        return imagebuffer[]
-//    }
+
+    
+    /**
+     used to debug eigen, this filles a image with data from a savedEigenImg
+
+     @param output image
+     */
     void fillEigenTest(cv::Mat& output){
         if(output.empty() || eigenTest2.empty()){
             std::cout<<"\ngetLastImg empty\n";
@@ -82,32 +128,36 @@ public:
         }
         eigenTest2.copyTo(output);
     }
-    bool saveEigenImg(int imgId,Eigen::Matrix<double,32,96>& output)
-    {
-                //        const int width = imageCols;
-        //        const int higth = imageRows;
-        if(imagebuffer.empty() || currentIdx < 0)return false;
-        //cv::eigen2cv(output,eigenTest);
-        
-//        Eigen::Map<Eigen::Matrix<float,32,32>,0,Eigen::Stride<3,1>>((float*)eigenTest2.data + 0 ) = Eigen::Map<Eigen::Matrix<float,32,32>,0,Eigen::Stride<1, 96>>(output.data() + 0*32);
-//        Eigen::Map<Eigen::Matrix<float,32,32>,0,Eigen::Stride<3,1>>((float*)eigenTest2.data + 4) = Eigen::Map<Eigen::Matrix<float,32,32>,0,Eigen::Stride<1, 96>>(output.data() + 1*32);
-//        Eigen::Map<Eigen::Matrix<float,32,32>,0,Eigen::Stride<3,1>>((float*)eigenTest2.data + 8) =Eigen::Map<Eigen::Matrix<float,32,32>,0,Eigen::Stride<1, 96>>(output.data() + 2*32);
-        Eigen::Map<Eigen::Matrix<double,32,96,Eigen::RowMajor>> b((double*)eigenTest2.data + 0);
-        b = output;
-        //        cv::cv2eigen(
-//        cv::Size targetSize(imageDimW,imageDimH);
-//        cv::Point target(0,0);
-//        cv::Rect dstRect = cv::Rect(target,targetSize);
-//        
-//        imgId = imagebuffer[currentIdx].regionId;
-//        //        Eigen::Map<Eigen::Matrix<double,32,96>>( output.data()) =( imagebuffer[currentIdx].image.data() );
-//        cv::cv2eigen(imagebuffer[currentIdx].image,output);
+    
+    
 
-        return false;
+    /**
+     savesa eigen matrix into a image
+     
+     @param imgId the image id
+     @param input eigen image
+     @return true if it succseids
+     */
+    bool saveEigenImg(int imgId,Eigen::Matrix<double,32,96>& input)
+    {
+
+        if(imagebuffer.empty() || currentIdx < 0)return false;
+
+        Eigen::Map<Eigen::Matrix<double,32,96,Eigen::RowMajor>> b((double*)eigenTest2.data + 0);
+        b = input;
+
+        return true;
     }
     
     
     
+    /**
+     get last updated image
+
+     @param imgId its ide
+     @param output2 the image in eigen form
+     @return true on success
+     */
     bool getLastImg(int& imgId,Eigen::Matrix<double,32,96>& output2)
     {
 
@@ -125,13 +175,6 @@ public:
         cv::Mat img = src(dstRect);
         
         img.convertTo(eigenTest, CV_64F);
-//        cv::Mat tmp;
-//        std::cout<<"\n img 1 elemSize ="<<img.elemSize()<<" size = "<<img.size()<<" type() = "<<img.type()<<" depth() = "<<img.depth()<<" total() = "<<img.total()<<" \n";
-//        std::cout<<"\ngetLastImg 1 elemSize ="<<eigenTest.elemSize()<<" size = "<<eigenTest.size()<<" type() = "<<eigenTest.type()<<" depth() = "<<eigenTest.depth()<<" total() = "<<eigenTest.total()<<" \n";
-//        std::cout<<"\ngetLastImg 2 elemSize ="<<eigenTest2.elemSize()<<" size = "<<eigenTest2.size()<<" type() = "<<eigenTest2.type()<<" depth() = "<<eigenTest2.depth()<<" total() = "<<eigenTest2.total()<<" \n";
-//        img.copyTo(tmp);//
-//        std::cout<<"\ngetLastImg tmp elemSize ="<<tmp.elemSize()<<" size = "<<tmp.size()<<" tmp.type() = "<<tmp.type()<<" depth() = "<<tmp.depth()<<" total() = "<<tmp.total()<<" \n";
-//    
 
         if(img.empty())
         {

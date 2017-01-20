@@ -8,7 +8,7 @@
 
 #include "imagestorage.hpp"
 
-
+// resize image
 void ObjectImages::imageResize(const cv::Mat& srcframe, const cv::Rect objectLocation,cv::Mat& dstframe)
 {
     cv::Size targetSize(imageDimW,imageDimH);
@@ -23,7 +23,13 @@ void ObjectImages::imageResize(const cv::Mat& srcframe, const cv::Rect objectLoc
 }
 
 
-
+/**
+ filles the output image with all the stored  images in a grid
+ 
+ @param output the image
+ @param imageCols number of adjecent images
+ @param imageRows number of images vertecly
+ */
 void ObjectImages::fillMosaic(cv::Mat& output,const int imageCols,const int imageRows)
 {
     madeTheLoop = false;
@@ -51,7 +57,12 @@ void ObjectImages::fillMosaic(cv::Mat& output,const int imageCols,const int imag
     }
 }
 
-
+/**
+ store the resized image
+ 
+ @param frame the frame to extract image data from
+ @param detectArea e current detected areas
+ */
 void ObjectImages::storeframe(const cv::Mat& frame,const DetectedArea& detectArea)
 {
     const cv::Rect objectLocation = detectArea.area;
@@ -66,6 +77,14 @@ void ObjectImages::storeframe(const cv::Mat& frame,const DetectedArea& detectAre
     
 }
 
+/**
+ stores resized image for area in the imagebuffer if it has been updated in the last frame -+ wiggle
+ 
+ @param frame the frame to extract image data from
+ @param detectAreas a vector of the current detected areas
+ @param frameId the current frame id ,
+ @param wiggle the range of frame id that should be trained on
+ */
 void ObjectImages::storeframe(const cv::Mat& frame,
                               const std::vector<DetectedArea>& detectAreas,
                               const int frameId,const int wiggle)
