@@ -13,11 +13,28 @@
 #include "debug_helper_info.h"
 #include "utils.hpp"
 
+
+/**
+ Used to turn a non-template parm into a template parm
+ */
 template <int N>
 struct NetSize{
     enum{value = N};
 };
 
+
+
+/**
+ ConvHyperParam hyper parameters for a layer on the convolutional neural network (CNN)
+
+ @param ImageDim input dimensions without depth ( 32x32 x3(rgb) -> 32)
+ @param ImageDepth image depth , depth ( 32x32 x3(rgb) -> 3), or equal to number of filters on the prev layer
+ @param FilterDim1 dimensions without depth ( filters depth is the same as image)
+ @param FilterCount1 how many filters this layer has
+ @param Stride1 what stride the layer should take
+ @param Padding1 if the input should be padded, (the padding is done autmatic so do not include it in imgdim)
+ @return is used to set the parm on the convnet
+ */
 template <int ImageDim,int ImageDepth,int FilterDim1,int FilterCount1, int Stride1,int Padding1 = 0,int FilterLength1 = FilterDim1*FilterDim1*ImageDepth,int CalcRowIn1 = ImageDim + 2*Padding1,int CalcColIn1 = (ImageDim + 2*Padding1)*ImageDepth,int CalcRowOut1 = FilterDim1*FilterDim1*ImageDepth, int CalcOutDimTmp = (ImageDim - FilterDim1 + 2*Padding1)/Stride1 + 1,int CalcColOut1 = CalcOutDimTmp*CalcOutDimTmp,int CalcOutDimColTmp = CalcOutDimTmp*FilterCount1>
 struct ConvHyperParam {
     //    const int In{ImageDepth};
@@ -41,9 +58,15 @@ struct ConvHyperParam {
 };
 
 
+/**
+ ConvNetLayer layer on the convolutional neural network (CNN)
+ 
+ @param HyperParam this layers hyper parameters
+ */
 template <typename HyperParam>
 class ConvNetLayer {
 public:
+    // so it can be access later
     using ImgDim		 = typename HyperParam::ImgDim;
     using ImgDepth		 = typename HyperParam::ImgDepth;
     using FilterDim		 = typename HyperParam::FilterDim;
@@ -62,7 +85,7 @@ public:
     using OutputCol = typename HyperParam::OutputCol;
     
     
-    
+    // compile time geters for the parm,
     constexpr int getImageDim() {return ImgDim::value;}
     constexpr int getImgDepth() {return ImgDepth::value;}
     constexpr int getFilterDim() {return FilterDim::value;}
@@ -71,7 +94,18 @@ public:
     constexpr int getStride() {return Stride::value;}
     constexpr int getPadding() {return Padding::value;}
     
+    
+    /**
+     When padding is used there needs to be a offset into the eigen matrix to properly load data
+
+     @return padding offset x-axis
+     */
     constexpr int getPaddingOffsetX() {return ImgDim::value * Padding::value*ImgDepth::value;}
+    /**
+     When padding is used there needs to be a offset into the eigen matrix to properly load data
+     
+     @return padding offset y-axis
+     */
     constexpr int getPaddingOffsetY() {return Padding::value;}
     
     
@@ -86,10 +120,18 @@ public:
     
     using type = HyperParam;
     
+    // holds the filters for this layer
     Eigen::Matrix<double, FilterCount::value,FilterLength::value> filters;
+    // holds the bias for this layer
     Eigen::Matrix<double, FilterCount::value,1> bias;
 };
 
+/**
+ Convolutional neural network (CNN) , 4 layers
+ takes a ConvNetLayer as template parm with the correct settings
+  This keeps track of the weigths and bias of all layers
+ this is then used in the learning moudle to preforme the training.
+ */
 template <typename L1,typename L2,typename L3,typename L4>
 class ConvNet {
     
@@ -116,6 +158,7 @@ public:
 
 class ObjectImages;
 
+// LearningModule used to train the networks
 template<class T>
 class LearningModule {
     ConvNet<typename T::Layer1,typename T::Layer2,typename T::Layer3,typename T::Layer4>& m_convNet;
@@ -163,12 +206,11 @@ void test_saveEigenImage(ObjectImages* storage,Eigen::Matrix<double,32,96>& inpu
 //#include <Eigen/Dense>
 
 
-//template <typename Derived>
-//void print_size(const Eigen::EigenBase<Derived>& b)
-//{
-//    std::cout << "size (rows, cols): " << b.size() << " (" << b.rows()
-//    << ", " << b.cols() << ")" << "\n";
-//}
+
+/**
+ Trains on the last network, this will use the storage and get the last image, try to identify it and return
+ it will save a image to be displayed
+ */
 template<typename T>
 void LearningModule<T>::trainlastImg()
 {
@@ -186,41 +228,43 @@ void LearningModule<T>::trainlastImg()
     test_saveEigenImage(m_storage, m_outputImage, my_id, 5);
 }
 
-template<int InputDim,int Filterdim,int Padding,int Stride,int Dim = (InputDim - Filterdim + 2*Padding)/Stride + 1>
-constexpr int OutputDim()
-{
-    return Dim;
-}
-
-//template<typename HyperParam>
-//void im2Col4(const Eigen::Matrix<double,HyperParam::CalcInRow::value,HyperParam::CalcInCol::value>& input,
-//             Eigen::Matrix<double,HyperParam::CalcOutRow::value,HyperParam::CalcOutCol::value>& output)
-//{
-
-//template<int Dim,int InputDepth,int PaddingHight = 0,int PaddingWidth = PaddingHight,int Dim2 = Dim + 2*PaddingHight,int Length = Dim *InputDepth + 2*PaddingWidth>
+// ConvInputMat used to make the input layer matrix with padding and so on
 template<typename HyperParam>
 using ConvInputMat = Eigen::Matrix<double, HyperParam::CalcInRow::value, HyperParam::CalcInCol::value>;
 
+// ConvLayer used to make the output layer so it can store the im2col data
 template<typename HyperParam>
 using ConvLayer = Eigen::Matrix<double, HyperParam::CalcOutRow::value, HyperParam::CalcOutCol::value>;
+
+// ConvLayerDyn used to make the output layer so it can store the im2col data, dyn is better for big matrixs
 template<typename HyperParam>
 using ConvLayerDyn = Eigen::MatrixXd;
-//template<int OutputDim,int FilterCount,int Length = OutputDim*OutputDim>
+
+// ConvResult the result of the filter*ConvLayerDyn is stored here
 template<typename HyperParam>
 using ConvResult = Eigen::Matrix<double,HyperParam::FilterCount::value,HyperParam::CalcOutCol::value>;
 
+// ConvOutput the correct shaped output data for this layer
 template<typename HyperParam>
 using ConvOutput = Eigen::Matrix<double,HyperParam::OutputRow::value,HyperParam::OutputCol::value>;
 
-//template<int OutputDim,int FilterCount>
+// GetOutputMap map the ConvResult so the output can be set
 template<typename HyperParam>
 using GetOutputMap = Eigen::Map<Eigen::Matrix<double,HyperParam::OutputRow::value,HyperParam::OutputRow::value>,0,Eigen::Stride<HyperParam::FilterCount::value, HyperParam::OutputCol::value>>;
 
-//template<int OutputDim,int FilterCount,int Skip = OutputDim*FilterCount>
+//SetOutputMap map the ConvOutput so the output can be set
 template<typename HyperParam>
 using SetOutputMap = Eigen::Map<Eigen::Matrix<double,HyperParam::OutputRow::value,HyperParam::OutputRow::value>,0,Eigen::Stride<1, HyperParam::OutputCol::value>>;
 
 
+/**
+ im2Col transform a MxNxD matrix into a AxB matrix ,
+ where every col(B) represent a output entry with the input field A transformed to be the data to dot with the filters
+
+ @param HyperParam
+ @param input ConvInputMat sized matrix
+ @param output ConvLayer sized matrix
+ */
 template<typename HyperParam>
 void im2Col(const Eigen::Matrix<double,HyperParam::CalcInRow::value,HyperParam::CalcInCol::value>& input,
              Eigen::Matrix<double,HyperParam::CalcOutRow::value,HyperParam::CalcOutCol::value>& output)
@@ -249,6 +293,15 @@ void im2Col(const Eigen::Matrix<double,HyperParam::CalcInRow::value,HyperParam::
         
     }
 }
+
+/**
+ im2Col transform a MxNxD matrix into a AxB matrix ,
+ where every col(B) represent a output entry with the input field A transformed to be the data to dot with the filters
+ 
+ @param HyperParam
+ @param input ConvInputMat sized matrix
+ @param output ConvLayerDyn sized matrix
+ */
 template<typename HyperParam>
 void im2Col(const Eigen::Matrix<double,HyperParam::CalcInRow::value,HyperParam::CalcInCol::value>& input,
             Eigen::MatrixXd& output)
@@ -271,9 +324,7 @@ void im2Col(const Eigen::Matrix<double,HyperParam::CalcInRow::value,HyperParam::
         y *=stride*depth;
         
         for (int r = 0; r < filterDim ; ++r) {
-//            std::cout<<"r = "<<r<<" block("<<r*filterDim*depth<<", 0, "<<filterDim*depth<<", 1) = "
-//            <<" input.block("<<x<<", "<<y<<", "<<filterDim<<", "<<filterDim*depth
-//            <<").block( "<<r<<", 0, 1, "<<filterDim*depth<<").transpose()"<<"\n";
+
             output.col(i).block(r*filterDim*depth, 0, filterDim*depth, 1) = input.block(x,y,filterDim,filterDim*depth).block(r,0,1,filterDim*depth).transpose();
             
         }
@@ -285,7 +336,13 @@ template<typename HyperParm1,typename HyperParam2>
 using NextLayer = Eigen::Map<Eigen::Matrix<double, HyperParm1::OutputRow::value, HyperParm1::OutputCol::value>,0,Eigen::Stride<HyperParam2::CalcInRow::value, 1>>;
 template<typename HyperParm>
 using FromLayer = Eigen::Map<Eigen::Matrix<double,HyperParm::OutputRow::value, HyperParm::OutputCol::value>,0,Eigen::Stride<1, HyperParm::OutputCol::value>>;
-//returns the class
+
+
+/**
+ Does on forward pass with the conv net, on the m_currentImage
+
+ @return a id number
+ */
 template<typename T>
 int LearningModule<T>::convForward()
 {
@@ -379,7 +436,7 @@ int LearningModule<T>::convForward()
     NextLayer<Layer2,Layer4>(output.data() + move4) = FromLayer<Layer2>(result2.data());
     std::cout<<"\n----------end skeleton--------------\n";
     m_outputImage = output;
-    return true;
+    return -1;
 }
 
 #endif /* conv_net_hpp */
