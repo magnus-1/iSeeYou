@@ -11,6 +11,14 @@
 
 
 // get the larges object and returns a bounding rect around it
+
+/**
+ takes a black and white frame and finds all areas
+
+ @param threshold the bw image
+ @param maxObjects max number of objects to find
+ @return a vector of areas
+ */
 std::vector<cv::Rect> detectMovingObjects(cv::Mat& threshold,int maxObjects) {
     std::vector<std::vector<cv::Point>> contours;
     std::vector<cv::Vec4i> hierarchy;
@@ -35,6 +43,16 @@ std::vector<cv::Rect> detectMovingObjects(cv::Mat& threshold,int maxObjects) {
 }
 
 
+
+/**
+ Findes all areas that have had movment in between frames
+
+ @param currentframe the current frame sample
+ @param lastframe the previous frame
+ @param settings contains the threshold value
+ @param maxObjects maximum  number of object that should be detected
+ @return a vector of all the areas that have had movment
+ */
 std::vector<cv::Rect> extract_moving_objects(struct frame_sample* currentframe,struct frame_sample* lastframe,struct display_settings& settings, int maxObjects)
 {
     cv::Mat framdiff;
