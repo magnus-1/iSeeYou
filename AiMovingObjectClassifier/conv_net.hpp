@@ -332,8 +332,18 @@ void im2Col(const Eigen::Matrix<double,HyperParam::CalcInRow::value,HyperParam::
     }
 }
 
+/**
+ NextLayer maps the ConvInputMat in a way so that the ConvResult can be correcly reshaped and set
+ @param HyperParam1 from layer type
+ @param HyperParam2 to layer type
+ */
 template<typename HyperParm1,typename HyperParam2>
 using NextLayer = Eigen::Map<Eigen::Matrix<double, HyperParm1::OutputRow::value, HyperParm1::OutputCol::value>,0,Eigen::Stride<HyperParam2::CalcInRow::value, 1>>;
+
+/**
+ FromLayer maps the ConvResult in a way so that the NextLayer map can be correcly reshaped and set
+ @param HyperParam from layer type
+ */
 template<typename HyperParm>
 using FromLayer = Eigen::Map<Eigen::Matrix<double,HyperParm::OutputRow::value, HyperParm::OutputCol::value>,0,Eigen::Stride<1, HyperParm::OutputCol::value>>;
 
@@ -362,54 +372,39 @@ int LearningModule<T>::convForward()
     const int l1Col = layer1.getImageDim()*layer1.getImgDepth();
     const int l1x = layer1.getPadding() * layer1.getImgDepth();
     const int l1y = layer1.getPadding();
-    
+    //convinput my be padded , this stores the m_currentImage in correct position
     convInput.block(l1y,l1x,l1Row,l1Col) = m_currentImage;
 
-//    std::cout<<"\n convInput = \n"<<convInput<<"\n";
-    
-//    ConvLayer<Layer1> convLayer;
+    // used for the im2col layer output
     ConvLayerDyn<Layer1> convLayer(layer1.getCalcOutRow(),layer1.getCalcOutCol());
     print_size(convLayer);
+    // generate the convLayer so the colums represent one output cell, that is multiplyed by the filters
     im2Col<Layer1>(convInput, convLayer);
     
-    //testing_im2Col_old<layerDim, filterDim,padding,layerDepth,stride>(convInput, convLayer);
     std::cout<<"\n convLayer() = "<<convLayer.sum()<<"\n";
     print_size(convLayer);
+    
+    // Do the actual forward propagation.
+    // this is equal to have the filter move accross the inputimage in a sliding window fashion
+    // now its only a simple matrix multipley operation tanks to im2col
     ConvResult<Layer1> result = layer1.filters * convLayer;
     print_size(result);
-    // bias
+    // Add bias
     for (int i = 0; i < layer1.getFilterCount(); ++i) {
         result.row(i) = result.row(i).array() + layer1.bias(i);
     }
-    //std::cout<<"\n result = \n"<<result<<"\n";
-    
+
     // Relu
-    
     result = result.cwiseMax(0);
     
-    
-    ConvOutput<Layer1> output;
-    
-    output.setZero();
-    /// images side by side
-//        Eigen::Map<Eigen::Matrix<double, Layer1::OutputRow::value, Layer1::OutputCol::value>,0,Eigen::Stride<1, Layer1::OutputCol::value>>(output.data() )
-//        = Eigen::Map<Eigen::Matrix<double, Layer1::OutputRow::value, Layer1::OutputCol::value>,0,Eigen::Stride<Layer1::OutputRow::value, 1>>(result.data() );
-    
-    // interleave
-    std::cout<<"\n Layer1::OutputRow::value = "<<Layer1::OutputRow::value<<" Layer1::OutputCol::value = "<<Layer1::OutputCol::value<<"\n";
-//    Eigen::Map<Eigen::Matrix<double,Layer1::OutputRow::value,Layer1::OutputCol::value>,0,Eigen::Stride<Layer1::OutputRow::value, 1>>(output.data() )
-//    = Eigen::Map<Eigen::Matrix<double,Layer1::OutputRow::value, Layer1::OutputCol::value>,0,Eigen::Stride<1, Layer1::OutputCol::value>>(result.data() );
-    
-    
-
     ConvInputMat<Layer2> convInput2;
     convInput2.setZero();
     
     auto& layer2 = m_convNet.layer2;
     
-    
+    //the padding offset into the next layer
     const int move1 = layer2.getPaddingOffsetX() + layer2.getPaddingOffsetY();
-    
+    // inserts the data to the input of the next layer
     NextLayer<Layer1,Layer2>(convInput2.data() + move1) = FromLayer<Layer1>(result.data());
     
     
@@ -427,10 +422,11 @@ int LearningModule<T>::convForward()
 
     result2 = result2.cwiseMax(0); // relu
     
-    // output to image
-    //std::cout<<"\n output = \n"<<output<<"\n";
-//    Eigen::Map<Eigen::Matrix<double,Layer2::OutputRow::value,Layer2::OutputCol::value>,0,Eigen::Stride<Layer2::OutputRow::value, 1>>(output.data() )
-//    = Eigen::Map<Eigen::Matrix<double,Layer2::OutputRow::value, Layer2::OutputCol::value>,0,Eigen::Stride<1, Layer2::OutputCol::value>>(result2.data() );
+    ConvOutput<Layer1> output;
+    output.setZero();
+    // interleave
+    std::cout<<"\n Layer1::OutputRow::value = "<<Layer1::OutputRow::value<<" Layer1::OutputCol::value = "<<Layer1::OutputCol::value<<"\n";
+    
     auto& layer4 = m_convNet.layer4;
     const int move4 = layer4.getPaddingOffsetX() + layer4.getPaddingOffsetY();
     NextLayer<Layer2,Layer4>(output.data() + move4) = FromLayer<Layer2>(result2.data());

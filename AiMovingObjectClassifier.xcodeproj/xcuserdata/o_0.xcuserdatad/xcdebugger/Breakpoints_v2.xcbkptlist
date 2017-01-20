@@ -58,11 +58,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "AiMovingObjectClassifier/conv_net.hpp"
-            timestampString = "506619507.564106"
+            timestampString = "506621845.071884"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "361"
-            endingLineNumber = "361"
+            startingLineNumber = "376"
+            endingLineNumber = "376"
             landmarkName = "convForward()"
             landmarkType = "9">
          </BreakpointContent>
@@ -80,22 +80,6 @@
             startingLineNumber = "326"
             endingLineNumber = "326"
             landmarkName = "im2Col(const Eigen::Matrix&lt;double,HyperParam::CalcInRow::value,HyperParam::CalcInCol::value&gt;&amp; input, Eigen::MatrixXd&amp; output)"
-            landmarkType = "9">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "AiMovingObjectClassifier/conv_net.hpp"
-            timestampString = "506619507.564106"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "427"
-            endingLineNumber = "427"
-            landmarkName = "convForward()"
             landmarkType = "9">
          </BreakpointContent>
       </BreakpointProxy>
