@@ -41,6 +41,7 @@
 		85403AB11E26B8D300783534 /* user_gui.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = user_gui.cpp; sourceTree = "<group>"; };
 		85403AB21E26B8D300783534 /* user_gui.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = user_gui.hpp; sourceTree = "<group>"; };
 		85403AB41E26B9F800783534 /* keycodes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = keycodes.h; sourceTree = "<group>"; };
+		85515EAC1E32BE50006DFDD9 /* neural_net_common.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = neural_net_common.hpp; sourceTree = "<group>"; };
 		85B4957F1E2C0CAD009BC14C /* debug_helper_info.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = debug_helper_info.h; sourceTree = "<group>"; };
 		85C476761E26BB0B009CFA90 /* graphics_display.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = graphics_display.cpp; sourceTree = "<group>"; };
 		85C476771E26BB0B009CFA90 /* graphics_display.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = graphics_display.hpp; sourceTree = "<group>"; };
@@ -105,14 +106,15 @@
 				85C476821E26C776009CFA90 /* detectionloop.cpp */,
 				85C476831E26C776009CFA90 /* detectionloop.hpp */,
 				85403AAA1E26B2B600783534 /* main.cpp */,
+				85515EAC1E32BE50006DFDD9 /* neural_net_common.hpp */,
 				85C476871E26D690009CFA90 /* imagestorage.cpp */,
 				85C476881E26D690009CFA90 /* imagestorage.hpp */,
 				85FD4BE01E276F7D003B5322 /* conv_net.cpp */,
 				85FD4BE11E276F7D003B5322 /* conv_net.hpp */,
 				85FD4BE31E277B8B003B5322 /* classifiers.cpp */,
 				85FD4BE41E277B8B003B5322 /* classifiers.hpp */,
-				85148F011E316F790063A3B9 /* testcase */,
 				85148F021E31713F0063A3B9 /* utils.hpp */,
+				85148F011E316F790063A3B9 /* testcase */,
 			);
 			path = AiMovingObjectClassifier;
 			sourceTree = "<group>";

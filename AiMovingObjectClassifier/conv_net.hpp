@@ -12,16 +12,8 @@
 #include <iostream>
 #include "debug_helper_info.h"
 #include "utils.hpp"
-
-
-/**
- Used to turn a non-template parm into a template parm
- */
-template <int N>
-struct NetSize{
-    enum{value = N};
-};
-
+#include "neural_net_common.hpp"
+#include <opencv/cv.h>
 
 
 /**
@@ -158,6 +150,8 @@ public:
 
 class ObjectImages;
 
+template<class T>
+using LayerOutputImage = Eigen::Matrix<double,T::OutputRow::value,T::OutputCol::value>;
 // LearningModule used to train the networks
 template<class T>
 class LearningModule {
@@ -168,7 +162,11 @@ class LearningModule {
     }
     ObjectImages* m_storage = nullptr;
     Eigen::Matrix<double,32,96> m_currentImage;
-    Eigen::Matrix<double,32,96> m_outputImage;
+    LayerOutputImage< typename T::Layer1> m_outputImage1;
+    LayerOutputImage< typename T::Layer2> m_outputImage2;
+    LayerOutputImage< typename T::Layer3> m_outputImage3;
+    LayerOutputImage< typename T::Layer4> m_outputImage4;
+    LayerOutputImage< typename T::Layer4> m_outputImage;
     // methods
 public:
     void trainlastImg();
@@ -188,9 +186,68 @@ public:
     }
     
     
+private:
+    template<typename  T1>
+    struct LayerImageOutput
+    {
+        cv::Mat eigenTest2 = cv::Mat::zeros(T1::OutputRow::value,T1::OutputCol::value,CV_64FC1);
+        bool saveEigenImg(int imgId,Eigen::Matrix<double,T1::OutputRow::value,T1::OutputCol::value>& input)
+        {
+            Eigen::Map<Eigen::Matrix<double,T1::OutputRow::value,T1::OutputCol::value,Eigen::RowMajor>> b((double*)eigenTest2.data + 0);
+            b = input;
+            return true;
+        }
+        void fillMat(cv::Mat& output){
+            if(output.empty() || eigenTest2.empty()){
+                std::cout<<"\ngetLastImg empty\n";
+                return;
+            }
+            eigenTest2.copyTo(output);
+        }
+        
+        void fillMat(cv::Mat& output,cv::Rect& bound){
+            if(output.empty() || eigenTest2.empty()){
+                std::cout<<"\ngetLastImg empty\n";
+                return;
+            }
+            std::cout<<"\n bound = "<< bound<<"\n";
+//            cv::Mat dst = output(bound);
+            eigenTest2.copyTo(output(bound));
+            
+//            eigenTest2.assignTo(dst);
+        }
+        
+    };
     
+    LayerImageOutput<typename T::Layer1> layer1Out;
+    LayerImageOutput<typename T::Layer2> layer2Out;
+    LayerImageOutput<typename T::Layer3> layer3Out;
+    LayerImageOutput<typename T::Layer4> layer4Out;
     // Debug stuff
 public:
+    bool debug_show_layeroutput = false;
+
+    void fillMat(cv::Mat& output,cv::Rect& bounding,int layerLevel){
+        if(debug_show_layeroutput == false) return;
+        switch(layerLevel)
+        {
+            case 1: layer1Out.fillMat(output, bounding);break;
+            case 2: layer2Out.fillMat(output, bounding);break;
+            case 3: layer3Out.fillMat(output, bounding);break;
+            case 4: layer4Out.fillMat(output, bounding);break;
+        }
+    }
+    void fillMat(cv::Mat& output,int layerLevel){
+        if(debug_show_layeroutput == false) return;
+        switch(layerLevel)
+        {
+            case 1: layer1Out.fillMat(output);break;
+            case 2: layer2Out.fillMat(output);break;
+            case 3: layer3Out.fillMat(output);break;
+            case 4: layer4Out.fillMat(output);break;
+        }
+    }
+    
     int m_loop_count = 0;
     decltype(auto) getDebugConvNet()
     {
@@ -205,7 +262,15 @@ void test_loadEigenImage(ObjectImages* storage,Eigen::Matrix<double,32,96>& outp
 void test_saveEigenImage(ObjectImages* storage,Eigen::Matrix<double,32,96>& input, int imgId,int objectId);
 //#include <Eigen/Dense>
 
-
+//template<typename Input>
+//void test_saveEigenImage(ObjectImages* storage,Eigen::MatrixBase<Input>& input, int imgId,int objectId)
+//{
+//    const int rows = Input::RowsAtCompileTime;
+//    const int cols = Input::ColsAtCompileTime;
+//    Eigen::Matrix<double,rows,cols> result = (input.array()*(double)1/255).matrix();
+//    
+//    storage->saveEigenImg(imgId, result);
+//}
 
 /**
  Trains on the last network, this will use the storage and get the last image, try to identify it and return
@@ -223,9 +288,13 @@ void LearningModule<T>::trainlastImg()
         int res = convForward();
         std::cout<<"\n m_loop_count = "<<m_loop_count<<" convForward res = "<<res<<"\n";
     }else {
-        m_outputImage = m_currentImage;
+//        m_outputImage = m_currentImage;
     }
-    test_saveEigenImage(m_storage, m_outputImage, my_id, 5);
+    //    test_saveEigenImage(m_storage, m_outputImage, my_id, 5);
+    layer1Out.saveEigenImg(my_id, m_outputImage1);
+    layer2Out.saveEigenImg(my_id, m_outputImage2);
+    layer3Out.saveEigenImg(my_id, m_outputImage3);
+    layer4Out.saveEigenImg(my_id, m_outputImage4);
 }
 
 // ConvInputMat used to make the input layer matrix with padding and so on
@@ -341,6 +410,32 @@ template<typename HyperParm1,typename HyperParam2>
 using NextLayer = Eigen::Map<Eigen::Matrix<double, HyperParm1::OutputRow::value, HyperParm1::OutputCol::value>,0,Eigen::Stride<HyperParam2::CalcInRow::value, 1>>;
 
 /**
+ SideBySide maps thid data to a single value grayscale square
+ @param HyperParam to layer type
+ */
+template<typename HyperParm>
+using SideBySide = Eigen::Map<Eigen::Matrix<double, HyperParm::OutputRow::value, HyperParm::OutputRow::value>>;
+/**
+ FromResult maps the ConvInputMat in a way so that the ConvResult can be correcly reshaped and set
+ @param HyperParam to layer type
+ */
+template<typename HyperParm>
+using FromResult = Eigen::Map<Eigen::Matrix<double, HyperParm::OutputRow::value, HyperParm::OutputRow::value>,0,Eigen::Stride<HyperParm::OutputCol::value, HyperParm::FilterCount::value>>;
+
+template<typename HyperParm>
+using FromInput = Eigen::Map<Eigen::Matrix<double, HyperParm::OutputRow::value, HyperParm::OutputRow::value>,0,Eigen::Stride<HyperParm::OutputCol::value, 1>>;
+
+template<typename HyperParm>
+constexpr int outputDepthStride()
+{
+    return HyperParm::CalcOutCol::value;
+}
+//Eigen::Matrix<double,HyperParam::FilterCount::value,HyperParam::CalcOutCol::value>;
+
+// HyperParm::OutputCol::value
+// Eigen::Map<double, HyperParm1::OutputRow::value, HyperParm1::OutputCol::value>,0,Eigen::Stride<1, 25>>(output.data() )
+
+/**
  FromLayer maps the ConvResult in a way so that the NextLayer map can be correcly reshaped and set
  @param HyperParam from layer type
  */
@@ -361,11 +456,20 @@ int LearningModule<T>::convForward()
     using Layer3 = typename decltype(m_convNet.layer3)::type;
     using Layer4 = typename decltype(m_convNet.layer4)::type;
     
+    auto& layer1 = m_convNet.layer1;
+    auto& layer2 = m_convNet.layer2;
+    auto& layer3 = m_convNet.layer3;
+    auto& layer4 = m_convNet.layer4;
+    
+    const int move1 = layer1.getPaddingOffsetX() + layer1.getPaddingOffsetY();
+    const int move2 = layer2.getPaddingOffsetX() + layer2.getPaddingOffsetY();
+    const int move3 = layer3.getPaddingOffsetX() + layer3.getPaddingOffsetY();
+    const int move4 = layer4.getPaddingOffsetX() + layer4.getPaddingOffsetY();
 //    m_currentImage
     
     ConvInputMat<Layer1> convInput;
     
-    auto& layer1 = m_convNet.layer1;
+//    auto& layer1 = m_convNet.layer1;
     convInput.setZero();
 //    convInput.block<Layer1::ImgDim::value,Layer1::ImgDim::value * Layer1::ImgDepth::value>(layer1.getPadding(),layer1.getPadding()* layer1.getImgDepth()) = m_currentImage;
     const int l1Row = layer1.getImageDim();
@@ -378,6 +482,7 @@ int LearningModule<T>::convForward()
     // used for the im2col layer output
     ConvLayerDyn<Layer1> convLayer(layer1.getCalcOutRow(),layer1.getCalcOutCol());
     print_size(convLayer);
+    
     // generate the convLayer so the colums represent one output cell, that is multiplyed by the filters
     im2Col<Layer1>(convInput, convLayer);
     
@@ -397,41 +502,99 @@ int LearningModule<T>::convForward()
     // Relu
     result = result.cwiseMax(0);
     
+   
+
+    //the padding offset into the next layer
+//    const int move1 = layer2.getPaddingOffsetX() + layer2.getPaddingOffsetY();
+    //////// layer 2 ////////////
+    
     ConvInputMat<Layer2> convInput2;
     convInput2.setZero();
-    
-    auto& layer2 = m_convNet.layer2;
-    
-    //the padding offset into the next layer
-    const int move1 = layer2.getPaddingOffsetX() + layer2.getPaddingOffsetY();
     // inserts the data to the input of the next layer
-    NextLayer<Layer1,Layer2>(convInput2.data() + move1) = FromLayer<Layer1>(result.data());
+    NextLayer<Layer1,Layer2>(convInput2.data() + move2) = FromLayer<Layer1>(result.data());
     
-    
-    ConvLayerDyn<Layer1> convLayer2(layer2.getCalcOutRow(),layer2.getCalcOutCol());
-    print_size(convLayer2);
-    im2Col<Layer1>(convInput2, convLayer2);
-    
-    std::cout<<"\n convLayer2() = "<<convLayer2.sum()<<"\n";
-    print_size(convLayer2);
+    ConvLayerDyn<Layer2> convLayer2(layer2.getCalcOutRow(),layer2.getCalcOutCol());
+    im2Col<Layer2>(convInput2, convLayer2);
     ConvResult<Layer2> result2 = layer2.filters * convLayer2;
-    
     for (int i = 0; i < layer2.getFilterCount(); ++i) {
         result2.row(i) = result2.row(i).array() + layer2.bias(i);
     }
-
     result2 = result2.cwiseMax(0); // relu
     
-    ConvOutput<Layer1> output;
-    output.setZero();
+    //////// layer 3 ////////////
+    
+    ConvInputMat<Layer3> convInput3;
+    convInput3.setZero();
+    // inserts the data to the input of the next layer
+    NextLayer<Layer2,Layer3>(convInput3.data() + move3) = FromLayer<Layer2>(result.data());
+    
+    ConvLayerDyn<Layer3> convLayer3(layer3.getCalcOutRow(),layer3.getCalcOutCol());
+    im2Col<Layer3>(convInput3, convLayer3);
+    ConvResult<Layer3> result3 = layer3.filters * convLayer3;
+    for (int i = 0; i < layer3.getFilterCount(); ++i) {
+        result3.row(i) = result3.row(i).array() + layer3.bias(i);
+    }
+    result3 = result3.cwiseMax(0); // relu
+    
+    
     // interleave
     std::cout<<"\n Layer1::OutputRow::value = "<<Layer1::OutputRow::value<<" Layer1::OutputCol::value = "<<Layer1::OutputCol::value<<"\n";
+    std::cout<<"\n Layer2::OutputRow::value = "<<Layer2::OutputRow::value<<" Layer1::OutputCol::value = "<<Layer2::OutputCol::value<<"\n";
+    std::cout<<"\n Layer4::OutputRow::value = "<<Layer4::OutputRow::value<<" Layer4::OutputCol::value = "<<Layer4::OutputCol::value<<"\n";
     
-    auto& layer4 = m_convNet.layer4;
-    const int move4 = layer4.getPaddingOffsetX() + layer4.getPaddingOffsetY();
-    NextLayer<Layer2,Layer4>(output.data() + move4) = FromLayer<Layer2>(result2.data());
+    std::cout<<"\n outputDepthStride<Layer2>() = "<< outputDepthStride<Layer2>() <<" layer4 = " << outputDepthStride<Layer4>() <<"\n";
+
+
+    
+    //////// layer 4 ////////////
+    
+    ConvInputMat<Layer4> convInput4;
+    convInput4.setZero();
+    // inserts the data to the input of the next layer
+    NextLayer<Layer3,Layer4>(convInput4.data() + move4) = FromLayer<Layer3>(result.data());
+    
+    ConvLayerDyn<Layer4> convLayer4(layer4.getCalcOutRow(),layer4.getCalcOutCol());
+    im2Col<Layer4>(convInput4, convLayer4);
+    ConvResult<Layer4> result4 = layer4.filters * convLayer4;
+    for (int i = 0; i < layer4.getFilterCount(); ++i) {
+        result4.row(i) = result4.row(i).array() + layer4.bias(i);
+    }
+    result4 = result4.cwiseMax(0); // relu
+
+    // finnished
+    ConvOutput<Layer1> output;
+    output.setZero();
+    NextLayer<Layer2,Layer4>(output.data() + move4) = FromLayer<Layer2>(result3.data());
     std::cout<<"\n----------end skeleton--------------\n";
-    m_outputImage = output;
+    
+    
+    if(debug_show_layeroutput) {
+        for (int i = 0; i < layer1.getFilterCount() ; ++i) {
+            SideBySide<Layer1>(m_outputImage1.data() + i* outputDepthStride<Layer1>() )
+            = FromInput<Layer1>(m_currentImage.data() + i*layer1.getImageDim());
+            //        = Eigen::Map<Eigen::Matrix<double, 32, 32>,0,Eigen::Stride<96,3>>(result2.data() + i);
+        }
+        for (int i = 0; i < layer2.getFilterCount() ; ++i) {
+            SideBySide<Layer2>(m_outputImage2.data() + i* outputDepthStride<Layer2>() )
+            = FromResult<Layer2>(result2.data() + i);
+            //        = Eigen::Map<Eigen::Matrix<double, 32, 32>,0,Eigen::Stride<96,3>>(result2.data() + i);
+        }
+        for (int i = 0; i < layer3.getFilterCount() ; ++i) {
+            SideBySide<Layer3>(m_outputImage3.data() + i* outputDepthStride<Layer3>() )
+            = FromResult<Layer3>(result3.data() + i);
+            //        = Eigen::Map<Eigen::Matrix<double, 32, 32>,0,Eigen::Stride<96,3>>(result2.data() + i);
+        }
+        for (int i = 0; i < layer4.getFilterCount() ; ++i) {
+            SideBySide<Layer4>(m_outputImage4.data() + i* outputDepthStride<Layer4>() )
+            = FromResult<Layer4>(result4.data() + i);
+            //        = Eigen::Map<Eigen::Matrix<double, 32, 32>,0,Eigen::Stride<96,3>>(result2.data() + i);
+        }
+    }
+
+    
+//    Eigen::Map<Eigen::Matrix<double,32 , 96>,0,Eigen::Stride<1, 1>>(m_outputImage.data())
+//    = Eigen::Map<Eigen::Matrix<double,32 , 96>,0,Eigen::Stride<1, 1024>>(result2.data());//FromLayer<Layer2>(result2.data());
+//    m_outputImage = output;
     return -1;
 }
 

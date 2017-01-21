@@ -11,6 +11,7 @@
 #include <Eigen/Dense>
 #include <iostream>
 #include "utils.hpp"
+#include "neural_net_common.hpp"
 
 namespace classfier {
     // avrage cross-entropy loss
@@ -38,25 +39,6 @@ namespace classfier {
         layer.bias->setZero();
     }
     
-    /**
-      training_conf has the parameters to be used for training
-     */
-    class training_conf {
-    public:
-        const int epoch_count = 500;
-        const double acceptable_loss = 0.08;
-        const int loss_growth_limit = 6;
-        
-        /**
-         training_conf Constructor
-
-         @param epoch_count_parm how may epcohs this should train for at max
-         @param acceptable_loss_parm if this loss score is achived the training stops, even if more epoch are left
-         @param loss_growth_limit_parm if the loss score gets wors this many times in a row the training is halted
-         
-         */
-        training_conf(const int epoch_count_parm,double acceptable_loss_parm,int loss_growth_limit_parm) : epoch_count(epoch_count_parm), acceptable_loss(acceptable_loss_parm),loss_growth_limit(loss_growth_limit_parm){}
-    };
     
     template<typename Input, typename... Layer1, typename... Layer2, typename... Layer3, typename Output>
     void neural_net_forward_pass(Eigen::MatrixBase<Input>& trainingSet,
@@ -75,62 +57,7 @@ namespace classfier {
     
     
     
-    /**
-     avrage cross entropy loss
 
-     @param probability_score normilized propabilitys,
-     @param weights the last layers weigth
-     @param targetSet the desired target output
-     @return avrage cross entropy loss
-     */
-    template<typename Input,typename Weights,typename Target>
-    double compute_cross_entropy_loss(const Eigen::MatrixBase<Input>& probability_score,
-                                      const Eigen::MatrixBase<Weights>& weights,
-                                      const Eigen::MatrixBase<Target>& targetSet)
-    {
-        // the target set is 1 if it is correct other wise it is 0, this means only the correct propbs get ussed
-        Eigen::MatrixXd correct_probs = (probability_score.cwiseProduct(targetSet)).rowwise().sum();
-        //        std::cout<<"\ncorrect_prop = \n"<<correct_probs;
-        // log on all the correct outputs
-        Eigen::MatrixXd lg_probs = -(correct_probs.array().log());
-        double reg = 0.001;
-        double data_loss = lg_probs.sum();
-        // the loss due to the weigths and regulizesion factor
-        double reg_loss = 0.5*reg*( weights.array() * weights.array()).sum();
-        return data_loss + reg_loss;
-    }
-    
-    
-    /**
-      normilized probability score,
-
-     @param layerResult the network unnormilized output
-     @param scoreOut normilized probability score
-     */
-    template<typename LayerResult, typename Prob>
-    void probability_score(const Eigen::MatrixBase<LayerResult>& layerResult, Eigen::MatrixBase<Prob>& scoreOut)
-    {
-        Eigen::MatrixXd exp_score = layerResult.array().exp().matrix();
-        
-        scoreOut = ((exp_score.array()).colwise() / (exp_score.rowwise().sum()).array()).matrix();
-        
-    }
-    
-    
-    /**
-     Delta score for the output
-
-     @param prob normilized probability score
-     @param targetSet desired output
-     @param deltaScore the diffrents between result and target
-     */
-    template<typename ProbScore,typename Target, typename Output>
-    void deltascore(const Eigen::MatrixBase<ProbScore>& prob,const Eigen::MatrixBase<Target>& targetSet,Eigen::MatrixBase<Output>& deltaScore)
-    {
-        deltaScore = (prob.array() - targetSet.array()) / targetSet.rows();
-        //        deltaScore = (targetSet.array() - prob.array()) / targetSet.rows();
-    }
-    
     
     /**
      Calculate dW and dB for a layer
@@ -144,9 +71,9 @@ namespace classfier {
     void delta_weights(const Eigen::MatrixBase<Input>& layer,
                        const Eigen::MatrixBase<DeltaScore>& deltaScore,
                        const Eigen::MatrixBase<Weights>& weights,
-                       nn_layer<DeltaLayer...>& dlayer)
+                       nn_layer<DeltaLayer...>& dlayer,const training_conf& conf)
     {
-        double reg = 0.001;
+        double reg = conf.reg;//0.001;
         //        Eigen::MatrixXd lt = layer.transpose();
         //        std::cout<<"\n layer transpose \n"<<lt<<"\n";
         //        print_size(lt);
@@ -170,10 +97,12 @@ namespace classfier {
     template<typename... DeltaLayer, typename... Layer>
     void update_weights(const nn_layer<DeltaLayer...>& dlayer,
                         double step_size,
-                        nn_layer<Layer...>& layer)
+                        nn_layer<Layer...>& layer,const training_conf& conf)
     {
-        *layer.weight += -step_size * (*dlayer.weight);
-        *layer.bias += -step_size * (*dlayer.bias);
+//        *layer.weight += -step_size * (*dlayer.weight);
+//        *layer.bias += -step_size * (*dlayer.bias);
+        *layer.weight += -conf.step_size * (*dlayer.weight);
+        *layer.bias += -conf.step_size * (*dlayer.bias);
     }
     
     
@@ -218,7 +147,8 @@ namespace classfier {
                               nn_layer<DeltaLayer3...>& dlayer3,
                               Eigen::MatrixBase<Prob>& probs,
                               Eigen::MatrixBase<DScore>& dscore,
-                              Eigen::MatrixBase<Output>& scoreOut)
+                              Eigen::MatrixBase<Output>& scoreOut,
+                              const training_conf& conf)
         {
             
             /////
@@ -239,25 +169,25 @@ namespace classfier {
             
             deltascore(probs, targetSet, dscore);
             
-            delta_weights(hidden_layer2, dscore, *layer3.weight, dlayer3);
+            delta_weights(hidden_layer2, dscore, *layer3.weight, dlayer3,conf);
             Eigen::MatrixXd deltaHidden2 = dscore *( *layer3.weight).transpose();
             
             for (int i = 0; i < deltaHidden2.size(); ++i) {
                 deltaHidden2(i) = hidden_layer2(i) <= 0.0 ? 0.0 : deltaHidden2(i);
             }
             
-            delta_weights(hidden_layer1, deltaHidden2, *layer2.weight, dlayer2);
+            delta_weights(hidden_layer1, deltaHidden2, *layer2.weight, dlayer2,conf);
             Eigen::MatrixXd deltaHidden1 = deltaHidden2 *( *layer2.weight).transpose();
             
             for (int i = 0; i < deltaHidden1.size(); ++i) {
                 deltaHidden1(i) = hidden_layer1(i) <= 0.0 ? 0.0 : deltaHidden1(i);
             }
             
-            delta_weights(trainingSet, deltaHidden1, *layer1.weight, dlayer1);
+            delta_weights(trainingSet, deltaHidden1, *layer1.weight, dlayer1,conf);
             
-            update_weights(dlayer1, step_size, layer1);
-            update_weights(dlayer2, step_size, layer2);
-            update_weights(dlayer3, step_size, layer3);
+            update_weights(dlayer1, step_size, layer1, conf);
+            update_weights(dlayer2, step_size, layer2, conf);
+            update_weights(dlayer3, step_size, layer3, conf);
         }
     }
     
@@ -321,11 +251,11 @@ namespace classfier {
         //        std::cout<<"\nlayer 3 b = \n"<<*layer3.bias;
         for (int i = 0; i < conf.epoch_count; ++i) {
             probs.setZero();
-            detail::neural_net_train(trainingSet, targetSet, layer1, layer2, layer3, deltalayer1, deltalayer2, deltalayer3, probs, deltascore, scoreOut);
+            detail::neural_net_train(trainingSet, targetSet, layer1, layer2, layer3, deltalayer1, deltalayer2, deltalayer3, probs, deltascore, scoreOut,conf);
             
             if ((i + 1) % 1 == 0) {
                 std::cout<<"\nprobs = {\n"<< probs<<"\n}\n";
-                loss = compute_cross_entropy_loss(probs, *layer3.weight, targetSet);
+                loss = compute_cross_entropy_loss(probs, *layer3.weight, targetSet,conf);
                 std::cout<<"loss = {"<< loss<<"}\tdiff = {"<< loss_old - loss<<"}\n";
                 if (loss >= loss_old || loss < conf.acceptable_loss) {
                     loss_tracking++;

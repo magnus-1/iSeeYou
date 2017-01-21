@@ -65,7 +65,8 @@ public:
             imagebuffer.push_back(LabelImage());
         }
         eigenTest = cv::Mat::zeros(32,32,CV_64FC3);
-        eigenTest2 = cv::Mat::zeros(32,32,CV_64FC3);
+//        eigenTest2 = cv::Mat::zeros(32,32,CV_64FC3);
+        eigenTest2 = cv::Mat::zeros(32,96,CV_64FC1);
     }
 private:
     
