@@ -86,13 +86,14 @@ public:
     constexpr int getStride() {return Stride::value;}
     constexpr int getPadding() {return Padding::value;}
     
-    
+    // (ImgDim::value + 2*Padding::value)* Padding::value*ImgDepth::value
+    // ImgDim::value * Padding::value*ImgDepth::value
     /**
      When padding is used there needs to be a offset into the eigen matrix to properly load data
 
      @return padding offset x-axis
      */
-    constexpr int getPaddingOffsetX() {return ImgDim::value * Padding::value*ImgDepth::value;}
+    constexpr int getPaddingOffsetX() {return (ImgDim::value + 2*Padding::value)* Padding::value*ImgDepth::value;}
     /**
      When padding is used there needs to be a offset into the eigen matrix to properly load data
      
@@ -395,6 +396,16 @@ void im2Col(const Eigen::Matrix<double,HyperParam::CalcInRow::value,HyperParam::
     }
 }
 
+template <typename HyperParam1,typename HyperParam2>
+void print_next_info() {
+    std::cout<<"\nM( HyperParm1::OutputRow::value = "<< HyperParam1::OutputRow::value <<" , HyperParm1::OutputCol::value = " << HyperParam1::OutputCol::value <<"),Stride( HyperParam2::CalcInRow::value = "<<HyperParam2::CalcInRow::value<<", 1)"<<" \n";
+}
+
+template <typename HyperParm1>
+void print_from_info() {
+    std::cout<<"M( HyperParm1::OutputRow::value = "<< HyperParm1::OutputRow::value <<" , HyperParm::OutputCol::value = " << HyperParm1::OutputCol::value <<"),Stride(1, HyperParam2::CalcInRow::value = "<<HyperParm1::OutputCol::value<<")"<<" \n";
+}
+
 /**
  NextLayer maps the ConvInputMat in a way so that the ConvResult can be correcly reshaped and set
  @param HyperParam1 from layer type
@@ -402,6 +413,13 @@ void im2Col(const Eigen::Matrix<double,HyperParam::CalcInRow::value,HyperParam::
  */
 template<typename HyperParm1,typename HyperParam2>
 using NextLayer = Eigen::Map<Eigen::Matrix<double, HyperParm1::OutputRow::value, HyperParm1::OutputCol::value>,0,Eigen::Stride<HyperParam2::CalcInRow::value, 1>>;
+
+/**
+ FromLayer maps the ConvResult in a way so that the NextLayer map can be correcly reshaped and set
+ @param HyperParam from layer type
+ */
+template<typename HyperParm>
+using FromLayer = Eigen::Map<Eigen::Matrix<double,HyperParm::OutputRow::value, HyperParm::OutputCol::value>,0,Eigen::Stride<1, HyperParm::OutputCol::value>>;
 
 /**
  SideBySide maps thid data to a single value grayscale square
@@ -436,12 +454,7 @@ constexpr int outputDepthStride()
 // HyperParm::OutputCol::value
 // Eigen::Map<double, HyperParm1::OutputRow::value, HyperParm1::OutputCol::value>,0,Eigen::Stride<1, 25>>(output.data() )
 
-/**
- FromLayer maps the ConvResult in a way so that the NextLayer map can be correcly reshaped and set
- @param HyperParam from layer type
- */
-template<typename HyperParm>
-using FromLayer = Eigen::Map<Eigen::Matrix<double,HyperParm::OutputRow::value, HyperParm::OutputCol::value>,0,Eigen::Stride<1, HyperParm::OutputCol::value>>;
+
 
 
 /**
@@ -545,6 +558,7 @@ int LearningModule<T>::convForward()
 //    
 //    std::cout<<"\n outputDepthStride<Layer2>() = "<< outputDepthStride<Layer2>() <<" layer4 = " << outputDepthStride<Layer4>() <<"\n";
 //
+//    std::cout<<"\n outputDepthStride<Layer2>() = "<< outputDepthStride<Layer2>() <<" layer4 = " << outputDepthStride<Layer4>() <<"\n";
 
     
     //////// layer 4 ////////////

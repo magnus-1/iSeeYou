@@ -67,15 +67,15 @@ void mainLoop()
     cv::Point target(0,0);
     //    cv::Size targetSize(cv::Point(0,yOffset);
     cv::Rect bound0 (target,cv::Size(convNet.layer1.getImageDim()*convNet.layer1.getImgDepth(),convNet.layer1.getImageDim()));
-    target.y += convNet.layer1.getImageDim() + 40;
+    target.y += convNet.layer1.getImageDim();
     cv::Rect bound1 (target,cv::Size(convNet.layer1.getOutputCol(),convNet.layer1.getOutputRow()));
-    target.y += convNet.layer1.getOutputRow() + 40;
+    target.y += convNet.layer1.getOutputRow();
     cv::Rect bound2 (target,cv::Size(convNet.layer2.getOutputCol(),convNet.layer2.getOutputRow()));
-    target.y += convNet.layer2.getOutputRow() + 40;
+    target.y += convNet.layer2.getOutputRow();
     cv::Rect bound3 (target,cv::Size(convNet.layer3.getOutputCol(),convNet.layer3.getOutputRow()));
-    target.y += convNet.layer3.getOutputRow() + 40;
+    target.y += convNet.layer3.getOutputRow();
     cv::Rect bound4 (target,cv::Size(convNet.layer4.getOutputCol(),convNet.layer4.getOutputRow()));
-    target.y += convNet.layer4.getOutputRow() + 40;
+    target.y += convNet.layer4.getOutputRow();
 
     cv::Mat mosaic = cv::Mat::zeros(32*10, 32*10, lastSample->frame.type());
     // connect storage
