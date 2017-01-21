@@ -34,6 +34,7 @@ int main(int argc, const char * argv[]) {
     std::cout<<"    g = toggle grayscale frame\n";
     std::cout<<"    s = toggle object sample frame\n";
     std::cout<<"    r = toggle object resize sample frame\n";
+    std::cout<<"    L = toggle debug conv layer output \n";
     std::cout<<"    x/esc = quit\n";
     mainLoop();
     return 0;

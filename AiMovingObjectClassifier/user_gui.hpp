@@ -17,6 +17,7 @@ struct display_settings {
     bool show_detection_view = false;
     bool show_detection_resize_view = false;
     bool show_blur = false;
+    bool show_debug_conv_layer = false;
     double threshold_value = 18;
 };
 

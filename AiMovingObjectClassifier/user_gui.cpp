@@ -47,6 +47,9 @@ bool handleInput(int key, struct display_settings& settings)
         case IN_KEY_T:
             settings.show_threshold = !settings.show_threshold;
             break;
+        case IN_KEY_L:
+            settings.show_debug_conv_layer = !settings.show_debug_conv_layer;
+            break;
         case IN_KEY_X:
             return false;
         case IN_KEY_ESC:

@@ -24,11 +24,12 @@ void mainLoop()
     const std::string name_eigen_Test = "Test eigen test window";
     // storage test:
 //    ConvHyperParam<32, 3, 3, 3, 1,1>
+    //int ImageDim,int ImageDepth,int FilterDim1,int FilterCount1, int Stride1,int Padding1 = 0,
     // sets the hyperparm for the cnn
     ConvNet<
-    ConvHyperParam<32, 3, 3, 3, 1,1>
-    ,ConvHyperParam<32, 3, 3, 3, 1,1>
-    ,ConvHyperParam<32, 3, 3, 3, 1,1>
+    ConvHyperParam<32, 3, 3, 12, 1,1>
+    ,ConvHyperParam<32, 12, 3, 5, 1,1>
+    ,ConvHyperParam<32, 5, 3, 3, 1,1>
     ,ConvHyperParam<32, 3, 3, 4, 1,1>
     > convNet;
     // for now it randomize the weigth, add loading here
@@ -64,21 +65,23 @@ void mainLoop()
     cv::Mat eigenTest = cv::Mat::zeros(400, 500, CV_32FC1);
 //    int yOffset = 0;
     cv::Point target(0,0);
-//    cv::Size targetSize(cv::Point(0,yOffset);
+    //    cv::Size targetSize(cv::Point(0,yOffset);
+    cv::Rect bound0 (target,cv::Size(convNet.layer1.getImageDim()*convNet.layer1.getImgDepth(),convNet.layer1.getImageDim()));
+    target.y += convNet.layer1.getImageDim() + 40;
     cv::Rect bound1 (target,cv::Size(convNet.layer1.getOutputCol(),convNet.layer1.getOutputRow()));
-    target.y += convNet.layer1.getOutputRow();
+    target.y += convNet.layer1.getOutputRow() + 40;
     cv::Rect bound2 (target,cv::Size(convNet.layer2.getOutputCol(),convNet.layer2.getOutputRow()));
-    target.y += convNet.layer2.getOutputRow();
+    target.y += convNet.layer2.getOutputRow() + 40;
     cv::Rect bound3 (target,cv::Size(convNet.layer3.getOutputCol(),convNet.layer3.getOutputRow()));
-    target.y += convNet.layer3.getOutputRow();
+    target.y += convNet.layer3.getOutputRow() + 40;
     cv::Rect bound4 (target,cv::Size(convNet.layer4.getOutputCol(),convNet.layer4.getOutputRow()));
-    target.y += convNet.layer4.getOutputRow();
+    target.y += convNet.layer4.getOutputRow() + 40;
 
     cv::Mat mosaic = cv::Mat::zeros(32*10, 32*10, lastSample->frame.type());
     // connect storage
     learningModule.setStorage(&storage);
     
-    learningModule.debug_show_layeroutput = true;
+    learningModule.debug_show_layeroutput = settings.show_debug_conv_layer;
     
     int frameCount = 0;
     while (runloop) {
@@ -102,6 +105,7 @@ void mainLoop()
             storage.fillMosaic(mosaic, 10, 10);
         }
         
+        learningModule.debug_show_layeroutput = settings.show_debug_conv_layer;
         // start the forward pass and train on it
         learningModule.trainlastImg();
         
@@ -109,18 +113,18 @@ void mainLoop()
 //        learningModule.fillMat(eigenTest1,1);
 //        learningModule.fillMat(eigenTest2,2);
 //        learningModule.fillMat(eigenTest3,3);
-        if(learningModule.debug_show_layeroutput) {
+        if(settings.show_debug_conv_layer) {
+            learningModule.fillMat(eigenTest,bound0,0);
             learningModule.fillMat(eigenTest,bound1,1);
             learningModule.fillMat(eigenTest,bound2,2);
             learningModule.fillMat(eigenTest,bound3,3);
             learningModule.fillMat(eigenTest,bound4,4);
-            display_window(true, name_eigen_Test, eigenTest);
         }
         
         
         display_window(true, name_original, outputFrame);
         display_window(true, name_mosaic, mosaic);
-//        display_window(true, name_eigen_Test, eigenTest);
+        display_window(settings.show_debug_conv_layer, name_eigen_Test, eigenTest);
         
         // user controls
         key = cv::waitKey(10);
