@@ -29,7 +29,7 @@ void mainLoop()
     ConvHyperParam<32, 3, 3, 3, 1,1>
     ,ConvHyperParam<32, 3, 3, 3, 1,1>
     ,ConvHyperParam<32, 3, 3, 3, 1,1>
-    ,ConvHyperParam<32, 3, 3, 3, 1,0>
+    ,ConvHyperParam<32, 3, 3, 4, 1,1>
     > convNet;
     // for now it randomize the weigth, add loading here
     convNet.randomizeAll();
@@ -60,10 +60,26 @@ void mainLoop()
     cv::cvtColor(lastSample->frame, lastSample->grayScale , cv::COLOR_BGR2GRAY);
     ObjectImages storage(1,100,32,32,lastSample->frame.type());
     cv::Mat outputFrame = cv::Mat::zeros(FRAME_WIDTH, FRAME_HIGHT, lastSample->frame.type());
-    cv::Mat eigenTest = cv::Mat::zeros(32, 32, CV_32FC3);
+    //    cv::Mat eigenTest = cv::Mat::zeros(32, 32, CV_32FC3);
+    cv::Mat eigenTest = cv::Mat::zeros(400, 500, CV_32FC1);
+//    int yOffset = 0;
+    cv::Point target(0,0);
+//    cv::Size targetSize(cv::Point(0,yOffset);
+    cv::Rect bound1 (target,cv::Size(convNet.layer1.getOutputCol(),convNet.layer1.getOutputRow()));
+    target.y += convNet.layer1.getOutputRow();
+    cv::Rect bound2 (target,cv::Size(convNet.layer2.getOutputCol(),convNet.layer2.getOutputRow()));
+    target.y += convNet.layer2.getOutputRow();
+    cv::Rect bound3 (target,cv::Size(convNet.layer3.getOutputCol(),convNet.layer3.getOutputRow()));
+    target.y += convNet.layer3.getOutputRow();
+    cv::Rect bound4 (target,cv::Size(convNet.layer4.getOutputCol(),convNet.layer4.getOutputRow()));
+    target.y += convNet.layer4.getOutputRow();
+
     cv::Mat mosaic = cv::Mat::zeros(32*10, 32*10, lastSample->frame.type());
     // connect storage
     learningModule.setStorage(&storage);
+    
+    learningModule.debug_show_layeroutput = true;
+    
     int frameCount = 0;
     while (runloop) {
         // read from video stream
@@ -89,11 +105,22 @@ void mainLoop()
         // start the forward pass and train on it
         learningModule.trainlastImg();
         
-        storage.fillEigenTest(eigenTest);
+//        storage.fillEigenTest(eigenTest);
+//        learningModule.fillMat(eigenTest1,1);
+//        learningModule.fillMat(eigenTest2,2);
+//        learningModule.fillMat(eigenTest3,3);
+        if(learningModule.debug_show_layeroutput) {
+            learningModule.fillMat(eigenTest,bound1,1);
+            learningModule.fillMat(eigenTest,bound2,2);
+            learningModule.fillMat(eigenTest,bound3,3);
+            learningModule.fillMat(eigenTest,bound4,4);
+            display_window(true, name_eigen_Test, eigenTest);
+        }
+        
         
         display_window(true, name_original, outputFrame);
         display_window(true, name_mosaic, mosaic);
-        display_window(true, name_eigen_Test, eigenTest);
+//        display_window(true, name_eigen_Test, eigenTest);
         
         // user controls
         key = cv::waitKey(10);

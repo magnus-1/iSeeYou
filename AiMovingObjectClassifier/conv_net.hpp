@@ -194,7 +194,7 @@ private:
         bool saveEigenImg(int imgId,Eigen::Matrix<double,T1::OutputRow::value,T1::OutputCol::value>& input)
         {
             Eigen::Map<Eigen::Matrix<double,T1::OutputRow::value,T1::OutputCol::value,Eigen::RowMajor>> b((double*)eigenTest2.data + 0);
-            b = input;
+            b = (input.array()*(double)1/255).matrix();
             return true;
         }
         void fillMat(cv::Mat& output){
