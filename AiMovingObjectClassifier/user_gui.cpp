@@ -14,9 +14,11 @@
 
 bool handleInput(int key, struct display_settings& settings)
 {
+    bool changed = true;
     switch (key) {
         case -1:
             std::cout<<".";
+            changed = false;
             break;
         case IN_KEY_PLUS:
             ++settings.threshold_value;
@@ -50,6 +52,9 @@ bool handleInput(int key, struct display_settings& settings)
         case IN_KEY_L:
             settings.show_debug_conv_layer = !settings.show_debug_conv_layer;
             break;
+        case IN_KEY_C:
+            settings.training_conv_on = !settings.training_conv_on;
+            break;
         case IN_KEY_X:
             return false;
         case IN_KEY_ESC:
@@ -57,8 +62,11 @@ bool handleInput(int key, struct display_settings& settings)
         default:
             std::cout<<"\nIN_KEY_"<<(char)key<<" = "<<key<<",'";
             //keycount++;
-            break;
+            return true;
     }
-    
+    if(changed)
+    {
+        std::cout<<"\nCurrent settings = \n"<<settings<<"\n";
+    }
     return true;
 }

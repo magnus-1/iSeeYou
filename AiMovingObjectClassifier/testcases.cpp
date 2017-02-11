@@ -8,6 +8,8 @@
 
 #include "testcases.hpp"
 #include "classifiers.hpp"
+#include "conv_net.hpp"
+#include <iomanip>
 template<typename Input,typename Target, typename Result>
 void validate_output(Eigen::MatrixBase<Input>& inputset,
                            Eigen::MatrixBase<Target>& targetSet,
@@ -39,7 +41,7 @@ void test_nn_train_xor()
     const int hiddenLayer1 = 3;
     const int hiddenLayer2 = 2;
     
-    classfier::training_conf conf{300,0.08,6};
+    classfier::training_conf conf{300,0.08,6,0.7,0.001};
     
     Eigen::Matrix<double, inputCols, inputRows> training_input1;
     Eigen::Matrix<double, outputCols, inputRows> training_target1;
@@ -97,8 +99,141 @@ void test_nn_train_xor()
     validate_output(training_input1,training_target1,result);
 }
 
+template <typename ...T,typename InputImg>
+void display_conv_thingy(ConvNet<T...>& convNet, Eigen::MatrixBase<InputImg>& inputImg,int imgId,const classfier::training_conf& conf) {
+    ConvResult<typename ConvNet<T...>::Layer4> target;
+    ConvResult<typename ConvNet<T...>::Layer4> prop_score;
+    prop_score.setZero();
+    Eigen::Index label = 0;
+    
+    target.setZero();
+    int tar = imgId % 3;
+    target(tar) = 1;
+    
+    conv_forward_pass(convNet, inputImg, prop_score,false);
+    prop_score.maxCoeff(&label);
+    double loss = classfier::compute_cross_entropy_loss(prop_score, convNet.layer4.filters, target, conf);
+    std::cout<<"\n Img"<<imgId+1<<" has label = "<<label + 1 ;
+    std::cout<<" loss = {"<< loss<<"} ";
+    std::cout<<" prop_score_ = "<<prop_score ;
+    
+//    std::cout<<"\n";
+}
+
+void test_eigen_conv_epoch()
+{
+    //    classfier::training_conf conf{100,0.08,20,0.1,0.001, 1.00,1.0};
+//    classfier::training_conf  conf{310,0.08,20,0.001,0.001, 1.00,1.0};
+    classfier::training_conf  conf{9,0.08,20,0.1,0.001, 1.00,1.0};
+    //    ConvNet<
+    //    ConvHyperParam<5, 3, 3, 10, 1,1>,
+    //    ConvHyperParam<5, 10, 3, 5, 1,1>,
+    //    ConvHyperParam<5, 5, 3, 5, 1,1>,
+    //    ConvHyperParam<5, 5, 3, 1, 1,1>
+    //    > convNet;
+    // use one convNet module to feed into the next convNet modoule
+    ConvNet<
+    ConvHyperParam<32, 3, 3, 10, 1,1>,
+    ConvHyperParam<32, 10, 3, 5, 1,1>,
+    ConvHyperParam<32, 5, 5, 5, 1,0>,
+    ConvHyperParam<28, 5, 12, 1, 6,2>
+    > convNet;
+    
+    using Layer1 = decltype(convNet.layer1);
+    using Layer2 = decltype(convNet.layer2);
+    using Layer3 = decltype(convNet.layer3);
+    using Layer4 = decltype(convNet.layer4);
+    //    using Layer0 = ConvHyperParam<5, 3, 3, 3, 1,1>;
+    using Layer0 = RawInputImage<Layer1>;
+    
+    auto& layer1 = convNet.layer1;
+    auto& layer2 = convNet.layer2;
+    auto& layer3 = convNet.layer3;
+    auto& layer4 = convNet.layer4;
+    
+    layer1.filters.setRandom();
+    layer2.filters.setRandom();
+    layer3.filters.setRandom();
+    layer4.filters.setRandom();
+    layer1.bias.setZero();
+    layer2.bias.setZero();
+    layer3.bias.setZero();
+    layer4.bias.setZero();
+    
+    
+    // random images to train agenst
+    ConvTestImage<Layer0> img1;
+    ConvTestImage<Layer0> img2;
+    ConvTestImage<Layer0> img3;
+    ConvTestImage<Layer0> img4;
+    
+    
+    ConvTestImage<Layer0> backImg;
+//    
+//    img1.setRandom() * 256;
+//    img2.setRandom() * 256;
+//    img3.setRandom() * 256;
+//    img4.setRandom() * 256;
+    img1.setRandom();
+    img2.setRandom();
+    img3.setRandom();
+    img4.setRandom();
+
+    
+    
+    ConvResult<Layer4> target;
+    ConvResult<Layer4> prop_score;
+    ConvResult<Layer4> dscore;
+    target.setZero();
+
+    std::cout << std::fixed;
+    std::cout << std::setprecision(3);
+
+    
+    std::cout<<"\n --------- start loop ---------"<<"\n";
+    
+    classfier::training_conf conf2 = conf;
+    conf2.epoch_count = 1;
+    for (int i = 0; i <conf.epoch_count ; ++i) {
+        target.setZero();
+        int tar = i % 3;
+        target(tar) = 1;
+        switch(tar) {
+            case 0: conv_train_fwd_bwd_pass(convNet, img1, target, conf2); break;
+            case 1: conv_train_fwd_bwd_pass(convNet, img2, target, conf2); break;
+            case 2: conv_train_fwd_bwd_pass(convNet, img3, target, conf2); break;
+        }
+        
+        if(i % 1 == 0) {
+            std::cout<<"\n ----------- i = "<< i <<"--------------"<<"\n";
+            display_conv_thingy(convNet, img1, 0, conf2);
+            display_conv_thingy(convNet, img2, 1, conf2);
+            display_conv_thingy(convNet, img3, 2, conf2);
+            //conf2.step_size /=2.0;
+        }
+
+        
+    }
+
+    std::cout<<"\n ------------- done ------------"<<"\n";
+
+    display_conv_thingy(convNet, img1, 0, conf2);
+    display_conv_thingy(convNet, img2, 1, conf2);
+    display_conv_thingy(convNet, img3, 2, conf2);
+    std::cout<<"\n -------------------------"<<"\n";
+    
+    
+}
+
+
 
 void test_nn_training()
 {
     test_nn_train_xor();
+}
+
+
+void test_conv_training()
+{
+    test_eigen_conv_epoch();
 }

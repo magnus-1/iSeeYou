@@ -170,18 +170,11 @@ namespace classfier {
             deltascore(probs, targetSet, dscore);
             
             delta_weights(hidden_layer2, dscore, *layer3.weight, dlayer3,conf);
-            Eigen::MatrixXd deltaHidden2 = dscore *( *layer3.weight).transpose();
-            
-            for (int i = 0; i < deltaHidden2.size(); ++i) {
-                deltaHidden2(i) = hidden_layer2(i) <= 0.0 ? 0.0 : deltaHidden2(i);
-            }
+            Eigen::MatrixXd deltaHidden2 = hidden_layer2.binaryExpr( dscore *( *layer3.weight).transpose(),BackPropOnMin<>());
             
             delta_weights(hidden_layer1, deltaHidden2, *layer2.weight, dlayer2,conf);
-            Eigen::MatrixXd deltaHidden1 = deltaHidden2 *( *layer2.weight).transpose();
-            
-            for (int i = 0; i < deltaHidden1.size(); ++i) {
-                deltaHidden1(i) = hidden_layer1(i) <= 0.0 ? 0.0 : deltaHidden1(i);
-            }
+            Eigen::MatrixXd deltaHidden1 = hidden_layer1.binaryExpr(deltaHidden2 *( *layer2.weight).transpose(),BackPropOnMin<>());
+
             
             delta_weights(trainingSet, deltaHidden1, *layer1.weight, dlayer1,conf);
             
@@ -255,7 +248,7 @@ namespace classfier {
             
             if ((i + 1) % 1 == 0) {
                 std::cout<<"\nprobs = {\n"<< probs<<"\n}\n";
-                loss = compute_cross_entropy_loss(probs, *layer3.weight, targetSet,conf);
+                loss = compute_cross_entropy_loss_minibatch(probs, *layer3.weight, targetSet,conf);
                 std::cout<<"loss = {"<< loss<<"}\tdiff = {"<< loss_old - loss<<"}\n";
                 if (loss >= loss_old || loss < conf.acceptable_loss) {
                     loss_tracking++;

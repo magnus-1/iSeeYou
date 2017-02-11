@@ -205,6 +205,17 @@ void test_loadEigenImage(ObjectImages* storage,Eigen::Matrix<double,32,96>& outp
     }
 }
 
+bool test_loadEigenImageAt(ObjectImages* storage,int atStorageLocation,Eigen::Matrix<double,32,96>& output, int& imgId,int& classId)
+{
+    //    int imgId = 0;
+//    int res = storage->getLastImg(imgId, output);
+    int res = storage->getImgAt(atStorageLocation, imgId, classId, output);
+    if(res < 0){
+        std::cout<<"\n test_loadEigenImageAt false = "<<"\n";
+        return false;
+    }
+    return true;
+}
 void test_saveEigenImage(ObjectImages* storage,Eigen::Matrix<double,32,96>& input, int imgId,int objectId)
 {
     Eigen::Matrix<double,32,96> result = (input.array()*(double)1/255).matrix();

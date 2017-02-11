@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "AiMovingObjectClassifier/imagestorage.hpp"
-            timestampString = "506632536.188039"
+            timestampString = "508463451.536249"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "90"
-            endingLineNumber = "90"
+            startingLineNumber = "107"
+            endingLineNumber = "107"
             landmarkName = "class ObjectImages"
             landmarkType = "3">
          </BreakpointContent>
@@ -26,11 +26,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "AiMovingObjectClassifier/detectionloop.cpp"
-            timestampString = "506653341.288199"
+            timestampString = "508454108.66805"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "80"
-            endingLineNumber = "80"
+            startingLineNumber = "95"
+            endingLineNumber = "95"
             landmarkName = "mainLoop()"
             landmarkType = "9">
          </BreakpointContent>
@@ -42,11 +42,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "AiMovingObjectClassifier/detectionloop.cpp"
-            timestampString = "506652359.256631"
+            timestampString = "508454108.66805"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "63"
-            endingLineNumber = "63"
+            startingLineNumber = "77"
+            endingLineNumber = "77"
             landmarkName = "mainLoop()"
             landmarkType = "9">
          </BreakpointContent>
@@ -58,12 +58,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "AiMovingObjectClassifier/conv_net.hpp"
-            timestampString = "506723377.613593"
+            timestampString = "508463451.536249"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "494"
-            endingLineNumber = "494"
-            landmarkName = "convForward()"
+            startingLineNumber = "1037"
+            endingLineNumber = "1037"
+            landmarkName = "tmp_func_remove_convforward()"
             landmarkType = "9">
          </BreakpointContent>
       </BreakpointProxy>
@@ -74,11 +74,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "AiMovingObjectClassifier/conv_net.hpp"
-            timestampString = "506723377.613593"
+            timestampString = "508463451.536249"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "390"
-            endingLineNumber = "390"
+            startingLineNumber = "612"
+            endingLineNumber = "612"
             landmarkName = "im2Col(const Eigen::Matrix&lt;double,HyperParam::CalcInRow::value,HyperParam::CalcInCol::value&gt;&amp; input, Eigen::MatrixXd&amp; output)"
             landmarkType = "9">
          </BreakpointContent>
@@ -90,12 +90,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "AiMovingObjectClassifier/conv_net.hpp"
-            timestampString = "506723587.397355"
+            timestampString = "508463451.536249"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "615"
-            endingLineNumber = "615"
-            landmarkName = "convForward()"
+            startingLineNumber = "1158"
+            endingLineNumber = "1158"
+            landmarkName = "tmp_func_remove_convforward()"
             landmarkType = "9">
          </BreakpointContent>
       </BreakpointProxy>
@@ -106,12 +106,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "AiMovingObjectClassifier/conv_net.hpp"
-            timestampString = "506723587.397355"
+            timestampString = "508463451.536249"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "614"
-            endingLineNumber = "614"
-            landmarkName = "convForward()"
+            startingLineNumber = "1157"
+            endingLineNumber = "1157"
+            landmarkName = "tmp_func_remove_convforward()"
             landmarkType = "9">
          </BreakpointContent>
       </BreakpointProxy>
@@ -122,11 +122,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "AiMovingObjectClassifier/conv_net.hpp"
-            timestampString = "506723377.613593"
+            timestampString = "508463451.536249"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "450"
-            endingLineNumber = "450"
+            startingLineNumber = "695"
+            endingLineNumber = "695"
             landmarkName = "outputDepthStride()"
             landmarkType = "9">
          </BreakpointContent>
@@ -138,13 +138,457 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "AiMovingObjectClassifier/conv_net.hpp"
-            timestampString = "506723587.397355"
+            timestampString = "508463451.536249"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "581"
-            endingLineNumber = "581"
-            landmarkName = "convForward()"
+            startingLineNumber = "1124"
+            endingLineNumber = "1124"
+            landmarkName = "tmp_func_remove_convforward()"
             landmarkType = "9">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "AiMovingObjectClassifier/classifiers.hpp"
+            timestampString = "506738510.493694"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "179"
+            endingLineNumber = "179"
+            landmarkName = "neural_net_train(Eigen::MatrixBase&lt;Input&gt;&amp; trainingSet, Eigen::MatrixBase&lt;Target&gt;&amp; targetSet, nn_layer&lt;Layer1...&gt;&amp; layer1, nn_layer&lt;Layer2...&gt;&amp; layer2, nn_layer&lt;Layer3...&gt;&amp; layer3, nn_layer&lt;DeltaLayer1...&gt;&amp; dlayer1, nn_layer&lt;DeltaLayer2...&gt;&amp; dlayer2, nn_layer&lt;DeltaLayer3...&gt;&amp; dlayer3, Eigen::MatrixBase&lt;Prob&gt;&amp; probs, Eigen::MatrixBase&lt;DScore&gt;&amp; dscore, Eigen::MatrixBase&lt;Output&gt;&amp; scoreOut, const training_conf&amp; conf)"
+            landmarkType = "9">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "AiMovingObjectClassifier/conv_net.hpp"
+            timestampString = "508463451.536249"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "776"
+            endingLineNumber = "776"
+            landmarkName = "conv_forward_pass(ConvNet&lt;T...&gt;&amp; convNet, Eigen::MatrixBase&lt;InputImg&gt;&amp; inputImg, Eigen::MatrixBase&lt;Result&gt;&amp; prop_score,bool debugMode = false,DebugLayerOutputImage&lt;Debug&gt;* debugOutImage = nullptr)"
+            landmarkType = "9">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "AiMovingObjectClassifier/conv_net.hpp"
+            timestampString = "508463451.536249"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "746"
+            endingLineNumber = "746"
+            landmarkName = "conv_forward_pass(ConvNet&lt;T...&gt;&amp; convNet, Eigen::MatrixBase&lt;InputImg&gt;&amp; inputImg, Eigen::MatrixBase&lt;Result&gt;&amp; prop_score,bool debugMode = false,DebugLayerOutputImage&lt;Debug&gt;* debugOutImage = nullptr)"
+            landmarkType = "9">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "AiMovingObjectClassifier/conv_net.hpp"
+            timestampString = "508463451.536249"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "780"
+            endingLineNumber = "780"
+            landmarkName = "conv_forward_pass(ConvNet&lt;T...&gt;&amp; convNet, Eigen::MatrixBase&lt;InputImg&gt;&amp; inputImg, Eigen::MatrixBase&lt;Result&gt;&amp; prop_score,bool debugMode = false,DebugLayerOutputImage&lt;Debug&gt;* debugOutImage = nullptr)"
+            landmarkType = "9">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "AiMovingObjectClassifier/neural_net_common.hpp"
+            timestampString = "507340494.884564"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "96"
+            endingLineNumber = "96"
+            landmarkName = "compute_cross_entropy_loss_minibatch(const Eigen::MatrixBase&lt;Input&gt;&amp; probability_score, const Eigen::MatrixBase&lt;Weights&gt;&amp; weights, const Eigen::MatrixBase&lt;Target&gt;&amp; targetSet, const training_conf&amp; conf, const double maxVal = 0.0)"
+            landmarkType = "9">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "double classfier::compute_cross_entropy_loss_minibatch&lt;Eigen::Matrix&lt;double, 4, 2, 0, 4, 2&gt;, Eigen::Matrix&lt;double, 2, 2, 0, 2, 2&gt;, Eigen::Matrix&lt;double, 4, 2, 0, 4, 2&gt; &gt;(Eigen::MatrixBase&lt;Eigen::Matrix&lt;double, 4, 2, 0, 4, 2&gt; &gt; const&amp;, Eigen::MatrixBase&lt;Eigen::Matrix&lt;double, 2, 2, 0, 2, 2&gt; &gt; const&amp;, Eigen::MatrixBase&lt;Eigen::Matrix&lt;double, 4, 2, 0, 4, 2&gt; &gt; const&amp;, classfier::training_conf const&amp;, double)"
+                  moduleName = "AiMovingObjectClassifier"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/o_0/Documents/programmering/iSeeYou/AiMovingObjectClassifier/neural_net_common.hpp"
+                  timestampString = "507340799.830775"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "96"
+                  endingLineNumber = "96"
+                  offsetFromSymbolStart = "46">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "double classfier::compute_cross_entropy_loss_minibatch&lt;Eigen::Matrix&lt;double, 4, 1024, 0, 4, 1024&gt;, Eigen::Matrix&lt;double, 4, 27, 0, 4, 27&gt;, Eigen::Matrix&lt;double, 4, 1024, 0, 4, 1024&gt; &gt;(Eigen::MatrixBase&lt;Eigen::Matrix&lt;double, 4, 1024, 0, 4, 1024&gt; &gt; const&amp;, Eigen::MatrixBase&lt;Eigen::Matrix&lt;double, 4, 27, 0, 4, 27&gt; &gt; const&amp;, Eigen::MatrixBase&lt;Eigen::Matrix&lt;double, 4, 1024, 0, 4, 1024&gt; &gt; const&amp;, classfier::training_conf const&amp;, double)"
+                  moduleName = "AiMovingObjectClassifier"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/o_0/Documents/programmering/iSeeYou/AiMovingObjectClassifier/neural_net_common.hpp"
+                  timestampString = "507340799.834542"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "96"
+                  endingLineNumber = "96"
+                  offsetFromSymbolStart = "46">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "AiMovingObjectClassifier/neural_net_common.hpp"
+            timestampString = "507340503.612977"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "131"
+            endingLineNumber = "131"
+            landmarkName = "compute_cross_entropy_loss(const Eigen::MatrixBase&lt;Input&gt;&amp; probability_score, const Eigen::MatrixBase&lt;Weights&gt;&amp; weights, const Eigen::MatrixBase&lt;Target&gt;&amp; targetSet, const training_conf&amp; conf, bool miniBatch = false, const double maxVal = 0.0)"
+            landmarkType = "9">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "double classfier::compute_cross_entropy_loss&lt;Eigen::Matrix&lt;double, 4, 2, 0, 4, 2&gt;, Eigen::Matrix&lt;double, 2, 2, 0, 2, 2&gt;, Eigen::Matrix&lt;double, 4, 2, 0, 4, 2&gt; &gt;(Eigen::MatrixBase&lt;Eigen::Matrix&lt;double, 4, 2, 0, 4, 2&gt; &gt; const&amp;, Eigen::MatrixBase&lt;Eigen::Matrix&lt;double, 2, 2, 0, 2, 2&gt; &gt; const&amp;, Eigen::MatrixBase&lt;Eigen::Matrix&lt;double, 4, 2, 0, 4, 2&gt; &gt; const&amp;, classfier::training_conf const&amp;, bool, double)"
+                  moduleName = "AiMovingObjectClassifier"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/o_0/Documents/programmering/iSeeYou/AiMovingObjectClassifier/neural_net_common.hpp"
+                  timestampString = "507340607.96392"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "131"
+                  endingLineNumber = "131"
+                  offsetFromSymbolStart = "226">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "double classfier::compute_cross_entropy_loss&lt;Eigen::Matrix&lt;double, 4, 1024, 0, 4, 1024&gt;, Eigen::Matrix&lt;double, 4, 27, 0, 4, 27&gt;, Eigen::Matrix&lt;double, 4, 1024, 0, 4, 1024&gt; &gt;(Eigen::MatrixBase&lt;Eigen::Matrix&lt;double, 4, 1024, 0, 4, 1024&gt; &gt; const&amp;, Eigen::MatrixBase&lt;Eigen::Matrix&lt;double, 4, 27, 0, 4, 27&gt; &gt; const&amp;, Eigen::MatrixBase&lt;Eigen::Matrix&lt;double, 4, 1024, 0, 4, 1024&gt; &gt; const&amp;, classfier::training_conf const&amp;, bool, double)"
+                  moduleName = "AiMovingObjectClassifier"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/o_0/Documents/programmering/iSeeYou/AiMovingObjectClassifier/neural_net_common.hpp"
+                  timestampString = "507340607.965887"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "131"
+                  endingLineNumber = "131"
+                  offsetFromSymbolStart = "226">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "AiMovingObjectClassifier/conv_net.hpp"
+            timestampString = "508463451.536249"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "897"
+            endingLineNumber = "897"
+            landmarkName = "conv_train_fwd_bwd_pass(ConvNet&lt;T...&gt;&amp; convNet, Eigen::MatrixBase&lt;InputImg&gt;&amp; inputImg, Eigen::MatrixBase&lt;Result&gt;&amp; target, classfier::training_conf&amp; conf)"
+            landmarkType = "9">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "AiMovingObjectClassifier/conv_net.hpp"
+            timestampString = "508463451.536249"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "865"
+            endingLineNumber = "865"
+            landmarkName = "conv_train_fwd_bwd_pass(ConvNet&lt;T...&gt;&amp; convNet, Eigen::MatrixBase&lt;InputImg&gt;&amp; inputImg, Eigen::MatrixBase&lt;Result&gt;&amp; target, classfier::training_conf&amp; conf)"
+            landmarkType = "9">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "AiMovingObjectClassifier/testcases.cpp"
+            timestampString = "508449070.483657"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "220"
+            endingLineNumber = "220"
+            landmarkName = "test_eigen_conv_epoch()"
+            landmarkType = "9">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "AiMovingObjectClassifier/testcases.cpp"
+            timestampString = "508449070.483657"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "199"
+            endingLineNumber = "199"
+            landmarkName = "test_eigen_conv_epoch()"
+            landmarkType = "9">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "AiMovingObjectClassifier/detectionloop.cpp"
+            timestampString = "508454108.66805"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "76"
+            endingLineNumber = "76"
+            landmarkName = "mainLoop()"
+            landmarkType = "9">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "AiMovingObjectClassifier/conv_net.hpp"
+            timestampString = "508463451.536249"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "889"
+            endingLineNumber = "889"
+            landmarkName = "conv_train_fwd_bwd_pass(ConvNet&lt;T...&gt;&amp; convNet, Eigen::MatrixBase&lt;InputImg&gt;&amp; inputImg, Eigen::MatrixBase&lt;Result&gt;&amp; target, classfier::training_conf&amp; conf)"
+            landmarkType = "9">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "AiMovingObjectClassifier/conv_net.hpp"
+            timestampString = "508463451.536249"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "912"
+            endingLineNumber = "912"
+            landmarkName = "conv_train_fwd_bwd_pass(ConvNet&lt;T...&gt;&amp; convNet, Eigen::MatrixBase&lt;InputImg&gt;&amp; inputImg, Eigen::MatrixBase&lt;Result&gt;&amp; target, classfier::training_conf&amp; conf)"
+            landmarkType = "9">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "AiMovingObjectClassifier/conv_net.hpp"
+            timestampString = "508463451.536249"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "915"
+            endingLineNumber = "915"
+            landmarkName = "conv_train_fwd_bwd_pass(ConvNet&lt;T...&gt;&amp; convNet, Eigen::MatrixBase&lt;InputImg&gt;&amp; inputImg, Eigen::MatrixBase&lt;Result&gt;&amp; target, classfier::training_conf&amp; conf)"
+            landmarkType = "9">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "AiMovingObjectClassifier/conv_net.hpp"
+            timestampString = "508463451.536249"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "658"
+            endingLineNumber = "658"
+            landmarkName = "col2im(Eigen::MatrixXd&amp; input, Eigen::Matrix&lt;double,HyperParam::CalcInRow::value,HyperParam::CalcInCol::value&gt;&amp; output )"
+            landmarkType = "9">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "void col2im&lt;ConvNetLayer&lt;ConvHyperParam&lt;28, 5, 12, 1, 6, 2, 720, 60, 32, 160, 720, 4, 16, 4&gt; &gt; &gt;(Eigen::Matrix&lt;double, -1, -1, 0, -1, -1&gt;&amp;, Eigen::Matrix&lt;double, ConvNetLayer&lt;ConvHyperParam&lt;28, 5, 12, 1, 6, 2, 720, 60, 32, 160, 720, 4, 16, 4&gt; &gt;::CalcInRow::value, ConvNetLayer&lt;ConvHyperParam&lt;28, 5, 12, 1, 6, 2, 720, 60, 32, 160, 720, 4, 16, 4&gt; &gt;::CalcInCol::value, ((Eigen::StorageOptions)0) | ((((ConvNetLayer&lt;ConvHyperParam&lt;28, 5, 12, 1, 6, 2, 720, 60, 32, 160, 720, 4, 16, 4&gt; &gt;::CalcInRow::value) == (1)) &amp;&amp; ((ConvNetLayer&lt;ConvHyperParam&lt;28, 5, 12, 1, 6, 2, 720, 60, 32, 160, 720, 4, 16, 4&gt; &gt;::CalcInCol::value) != (1))) ? ((Eigen::StorageOptions)1) : ((((ConvNetLayer&lt;ConvHyperParam&lt;28, 5, 12, 1, 6, 2, 720, 60, 32, 160, 720, 4, 16, 4&gt; &gt;::CalcInCol::value) == (1)) &amp;&amp; ((ConvNetLayer&lt;ConvHyperParam&lt;28, 5, 12, 1, 6, 2, 720, 60, 32, 160, 720, 4, 16, 4&gt; &gt;::CalcInRow::value) != (1))) ? ((Eigen::StorageOptions)0) : ((Eigen::StorageOptions)0))), ConvNetLayer&lt;ConvHyperParam&lt;28, 5, 12, 1, 6, 2, 720, 60, 32, 160, 720, 4, 16, 4&gt; &gt;::CalcInRow::value, ConvNetLayer&lt;ConvHyperParam&lt;28, 5, 12, 1, 6, 2, 720, 60, 32, 160, 720, 4, 16, 4&gt; &gt;::CalcInCol::value&gt;&amp;)"
+                  moduleName = "AiMovingObjectClassifier"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/o_0/Documents/programmering/iSeeYou/AiMovingObjectClassifier/conv_net.hpp"
+                  timestampString = "508447649.20449"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "594"
+                  endingLineNumber = "594"
+                  offsetFromSymbolStart = "589">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "void col2im&lt;ConvNetLayer&lt;ConvHyperParam&lt;32, 5, 5, 5, 1, 0, 125, 25, 32, 160, 125, 28, 784, 140&gt; &gt; &gt;(Eigen::Matrix&lt;double, -1, -1, 0, -1, -1&gt;&amp;, Eigen::Matrix&lt;double, ConvNetLayer&lt;ConvHyperParam&lt;32, 5, 5, 5, 1, 0, 125, 25, 32, 160, 125, 28, 784, 140&gt; &gt;::CalcInRow::value, ConvNetLayer&lt;ConvHyperParam&lt;32, 5, 5, 5, 1, 0, 125, 25, 32, 160, 125, 28, 784, 140&gt; &gt;::CalcInCol::value, ((Eigen::StorageOptions)0) | ((((ConvNetLayer&lt;ConvHyperParam&lt;32, 5, 5, 5, 1, 0, 125, 25, 32, 160, 125, 28, 784, 140&gt; &gt;::CalcInRow::value) == (1)) &amp;&amp; ((ConvNetLayer&lt;ConvHyperParam&lt;32, 5, 5, 5, 1, 0, 125, 25, 32, 160, 125, 28, 784, 140&gt; &gt;::CalcInCol::value) != (1))) ? ((Eigen::StorageOptions)1) : ((((ConvNetLayer&lt;ConvHyperParam&lt;32, 5, 5, 5, 1, 0, 125, 25, 32, 160, 125, 28, 784, 140&gt; &gt;::CalcInCol::value) == (1)) &amp;&amp; ((ConvNetLayer&lt;ConvHyperParam&lt;32, 5, 5, 5, 1, 0, 125, 25, 32, 160, 125, 28, 784, 140&gt; &gt;::CalcInRow::value) != (1))) ? ((Eigen::StorageOptions)0) : ((Eigen::StorageOptions)0))), ConvNetLayer&lt;ConvHyperParam&lt;32, 5, 5, 5, 1, 0, 125, 25, 32, 160, 125, 28, 784, 140&gt; &gt;::CalcInRow::value, ConvNetLayer&lt;ConvHyperParam&lt;32, 5, 5, 5, 1, 0, 125, 25, 32, 160, 125, 28, 784, 140&gt; &gt;::CalcInCol::value&gt;&amp;)"
+                  moduleName = "AiMovingObjectClassifier"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/o_0/Documents/programmering/iSeeYou/AiMovingObjectClassifier/conv_net.hpp"
+                  timestampString = "508447649.208"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "594"
+                  endingLineNumber = "594"
+                  offsetFromSymbolStart = "594">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "void col2im&lt;ConvNetLayer&lt;ConvHyperParam&lt;32, 10, 3, 5, 1, 1, 90, 30, 34, 340, 90, 32, 1024, 160&gt; &gt; &gt;(Eigen::Matrix&lt;double, -1, -1, 0, -1, -1&gt;&amp;, Eigen::Matrix&lt;double, ConvNetLayer&lt;ConvHyperParam&lt;32, 10, 3, 5, 1, 1, 90, 30, 34, 340, 90, 32, 1024, 160&gt; &gt;::CalcInRow::value, ConvNetLayer&lt;ConvHyperParam&lt;32, 10, 3, 5, 1, 1, 90, 30, 34, 340, 90, 32, 1024, 160&gt; &gt;::CalcInCol::value, ((Eigen::StorageOptions)0) | ((((ConvNetLayer&lt;ConvHyperParam&lt;32, 10, 3, 5, 1, 1, 90, 30, 34, 340, 90, 32, 1024, 160&gt; &gt;::CalcInRow::value) == (1)) &amp;&amp; ((ConvNetLayer&lt;ConvHyperParam&lt;32, 10, 3, 5, 1, 1, 90, 30, 34, 340, 90, 32, 1024, 160&gt; &gt;::CalcInCol::value) != (1))) ? ((Eigen::StorageOptions)1) : ((((ConvNetLayer&lt;ConvHyperParam&lt;32, 10, 3, 5, 1, 1, 90, 30, 34, 340, 90, 32, 1024, 160&gt; &gt;::CalcInCol::value) == (1)) &amp;&amp; ((ConvNetLayer&lt;ConvHyperParam&lt;32, 10, 3, 5, 1, 1, 90, 30, 34, 340, 90, 32, 1024, 160&gt; &gt;::CalcInRow::value) != (1))) ? ((Eigen::StorageOptions)0) : ((Eigen::StorageOptions)0))), ConvNetLayer&lt;ConvHyperParam&lt;32, 10, 3, 5, 1, 1, 90, 30, 34, 340, 90, 32, 1024, 160&gt; &gt;::CalcInRow::value, ConvNetLayer&lt;ConvHyperParam&lt;32, 10, 3, 5, 1, 1, 90, 30, 34, 340, 90, 32, 1024, 160&gt; &gt;::CalcInCol::value&gt;&amp;)"
+                  moduleName = "AiMovingObjectClassifier"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/o_0/Documents/programmering/iSeeYou/AiMovingObjectClassifier/conv_net.hpp"
+                  timestampString = "508447649.211917"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "594"
+                  endingLineNumber = "594"
+                  offsetFromSymbolStart = "594">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "void col2im&lt;ConvNetLayer&lt;ConvHyperParam&lt;32, 3, 3, 10, 1, 1, 27, 9, 34, 102, 27, 32, 1024, 320&gt; &gt; &gt;(Eigen::Matrix&lt;double, -1, -1, 0, -1, -1&gt;&amp;, Eigen::Matrix&lt;double, ConvNetLayer&lt;ConvHyperParam&lt;32, 3, 3, 10, 1, 1, 27, 9, 34, 102, 27, 32, 1024, 320&gt; &gt;::CalcInRow::value, ConvNetLayer&lt;ConvHyperParam&lt;32, 3, 3, 10, 1, 1, 27, 9, 34, 102, 27, 32, 1024, 320&gt; &gt;::CalcInCol::value, ((Eigen::StorageOptions)0) | ((((ConvNetLayer&lt;ConvHyperParam&lt;32, 3, 3, 10, 1, 1, 27, 9, 34, 102, 27, 32, 1024, 320&gt; &gt;::CalcInRow::value) == (1)) &amp;&amp; ((ConvNetLayer&lt;ConvHyperParam&lt;32, 3, 3, 10, 1, 1, 27, 9, 34, 102, 27, 32, 1024, 320&gt; &gt;::CalcInCol::value) != (1))) ? ((Eigen::StorageOptions)1) : ((((ConvNetLayer&lt;ConvHyperParam&lt;32, 3, 3, 10, 1, 1, 27, 9, 34, 102, 27, 32, 1024, 320&gt; &gt;::CalcInCol::value) == (1)) &amp;&amp; ((ConvNetLayer&lt;ConvHyperParam&lt;32, 3, 3, 10, 1, 1, 27, 9, 34, 102, 27, 32, 1024, 320&gt; &gt;::CalcInRow::value) != (1))) ? ((Eigen::StorageOptions)0) : ((Eigen::StorageOptions)0))), ConvNetLayer&lt;ConvHyperParam&lt;32, 3, 3, 10, 1, 1, 27, 9, 34, 102, 27, 32, 1024, 320&gt; &gt;::CalcInRow::value, ConvNetLayer&lt;ConvHyperParam&lt;32, 3, 3, 10, 1, 1, 27, 9, 34, 102, 27, 32, 1024, 320&gt; &gt;::CalcInCol::value&gt;&amp;)"
+                  moduleName = "AiMovingObjectClassifier"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/o_0/Documents/programmering/iSeeYou/AiMovingObjectClassifier/conv_net.hpp"
+                  timestampString = "508447649.215738"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "594"
+                  endingLineNumber = "594"
+                  offsetFromSymbolStart = "594">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "AiMovingObjectClassifier/conv_net.hpp"
+            timestampString = "508463451.536249"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "674"
+            endingLineNumber = "674"
+            landmarkName = "col2im(Eigen::MatrixXd&amp; input, Eigen::Matrix&lt;double,HyperParam::CalcInRow::value,HyperParam::CalcInCol::value&gt;&amp; output )"
+            landmarkType = "9">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "void col2im&lt;ConvNetLayer&lt;ConvHyperParam&lt;28, 5, 12, 1, 6, 2, 720, 60, 32, 160, 720, 4, 16, 4&gt; &gt; &gt;(Eigen::Matrix&lt;double, -1, -1, 0, -1, -1&gt;&amp;, Eigen::Matrix&lt;double, ConvNetLayer&lt;ConvHyperParam&lt;28, 5, 12, 1, 6, 2, 720, 60, 32, 160, 720, 4, 16, 4&gt; &gt;::CalcInRow::value, ConvNetLayer&lt;ConvHyperParam&lt;28, 5, 12, 1, 6, 2, 720, 60, 32, 160, 720, 4, 16, 4&gt; &gt;::CalcInCol::value, ((Eigen::StorageOptions)0) | ((((ConvNetLayer&lt;ConvHyperParam&lt;28, 5, 12, 1, 6, 2, 720, 60, 32, 160, 720, 4, 16, 4&gt; &gt;::CalcInRow::value) == (1)) &amp;&amp; ((ConvNetLayer&lt;ConvHyperParam&lt;28, 5, 12, 1, 6, 2, 720, 60, 32, 160, 720, 4, 16, 4&gt; &gt;::CalcInCol::value) != (1))) ? ((Eigen::StorageOptions)1) : ((((ConvNetLayer&lt;ConvHyperParam&lt;28, 5, 12, 1, 6, 2, 720, 60, 32, 160, 720, 4, 16, 4&gt; &gt;::CalcInCol::value) == (1)) &amp;&amp; ((ConvNetLayer&lt;ConvHyperParam&lt;28, 5, 12, 1, 6, 2, 720, 60, 32, 160, 720, 4, 16, 4&gt; &gt;::CalcInRow::value) != (1))) ? ((Eigen::StorageOptions)0) : ((Eigen::StorageOptions)0))), ConvNetLayer&lt;ConvHyperParam&lt;28, 5, 12, 1, 6, 2, 720, 60, 32, 160, 720, 4, 16, 4&gt; &gt;::CalcInRow::value, ConvNetLayer&lt;ConvHyperParam&lt;28, 5, 12, 1, 6, 2, 720, 60, 32, 160, 720, 4, 16, 4&gt; &gt;::CalcInCol::value&gt;&amp;)"
+                  moduleName = "AiMovingObjectClassifier"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/o_0/Documents/programmering/iSeeYou/AiMovingObjectClassifier/conv_net.hpp"
+                  timestampString = "508447580.709985"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "613"
+                  endingLineNumber = "613"
+                  offsetFromSymbolStart = "1152">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "void col2im&lt;ConvNetLayer&lt;ConvHyperParam&lt;32, 5, 5, 5, 1, 0, 125, 25, 32, 160, 125, 28, 784, 140&gt; &gt; &gt;(Eigen::Matrix&lt;double, -1, -1, 0, -1, -1&gt;&amp;, Eigen::Matrix&lt;double, ConvNetLayer&lt;ConvHyperParam&lt;32, 5, 5, 5, 1, 0, 125, 25, 32, 160, 125, 28, 784, 140&gt; &gt;::CalcInRow::value, ConvNetLayer&lt;ConvHyperParam&lt;32, 5, 5, 5, 1, 0, 125, 25, 32, 160, 125, 28, 784, 140&gt; &gt;::CalcInCol::value, ((Eigen::StorageOptions)0) | ((((ConvNetLayer&lt;ConvHyperParam&lt;32, 5, 5, 5, 1, 0, 125, 25, 32, 160, 125, 28, 784, 140&gt; &gt;::CalcInRow::value) == (1)) &amp;&amp; ((ConvNetLayer&lt;ConvHyperParam&lt;32, 5, 5, 5, 1, 0, 125, 25, 32, 160, 125, 28, 784, 140&gt; &gt;::CalcInCol::value) != (1))) ? ((Eigen::StorageOptions)1) : ((((ConvNetLayer&lt;ConvHyperParam&lt;32, 5, 5, 5, 1, 0, 125, 25, 32, 160, 125, 28, 784, 140&gt; &gt;::CalcInCol::value) == (1)) &amp;&amp; ((ConvNetLayer&lt;ConvHyperParam&lt;32, 5, 5, 5, 1, 0, 125, 25, 32, 160, 125, 28, 784, 140&gt; &gt;::CalcInRow::value) != (1))) ? ((Eigen::StorageOptions)0) : ((Eigen::StorageOptions)0))), ConvNetLayer&lt;ConvHyperParam&lt;32, 5, 5, 5, 1, 0, 125, 25, 32, 160, 125, 28, 784, 140&gt; &gt;::CalcInRow::value, ConvNetLayer&lt;ConvHyperParam&lt;32, 5, 5, 5, 1, 0, 125, 25, 32, 160, 125, 28, 784, 140&gt; &gt;::CalcInCol::value&gt;&amp;)"
+                  moduleName = "AiMovingObjectClassifier"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/o_0/Documents/programmering/iSeeYou/AiMovingObjectClassifier/conv_net.hpp"
+                  timestampString = "508447580.712492"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "613"
+                  endingLineNumber = "613"
+                  offsetFromSymbolStart = "1157">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "void col2im&lt;ConvNetLayer&lt;ConvHyperParam&lt;32, 10, 3, 5, 1, 1, 90, 30, 34, 340, 90, 32, 1024, 160&gt; &gt; &gt;(Eigen::Matrix&lt;double, -1, -1, 0, -1, -1&gt;&amp;, Eigen::Matrix&lt;double, ConvNetLayer&lt;ConvHyperParam&lt;32, 10, 3, 5, 1, 1, 90, 30, 34, 340, 90, 32, 1024, 160&gt; &gt;::CalcInRow::value, ConvNetLayer&lt;ConvHyperParam&lt;32, 10, 3, 5, 1, 1, 90, 30, 34, 340, 90, 32, 1024, 160&gt; &gt;::CalcInCol::value, ((Eigen::StorageOptions)0) | ((((ConvNetLayer&lt;ConvHyperParam&lt;32, 10, 3, 5, 1, 1, 90, 30, 34, 340, 90, 32, 1024, 160&gt; &gt;::CalcInRow::value) == (1)) &amp;&amp; ((ConvNetLayer&lt;ConvHyperParam&lt;32, 10, 3, 5, 1, 1, 90, 30, 34, 340, 90, 32, 1024, 160&gt; &gt;::CalcInCol::value) != (1))) ? ((Eigen::StorageOptions)1) : ((((ConvNetLayer&lt;ConvHyperParam&lt;32, 10, 3, 5, 1, 1, 90, 30, 34, 340, 90, 32, 1024, 160&gt; &gt;::CalcInCol::value) == (1)) &amp;&amp; ((ConvNetLayer&lt;ConvHyperParam&lt;32, 10, 3, 5, 1, 1, 90, 30, 34, 340, 90, 32, 1024, 160&gt; &gt;::CalcInRow::value) != (1))) ? ((Eigen::StorageOptions)0) : ((Eigen::StorageOptions)0))), ConvNetLayer&lt;ConvHyperParam&lt;32, 10, 3, 5, 1, 1, 90, 30, 34, 340, 90, 32, 1024, 160&gt; &gt;::CalcInRow::value, ConvNetLayer&lt;ConvHyperParam&lt;32, 10, 3, 5, 1, 1, 90, 30, 34, 340, 90, 32, 1024, 160&gt; &gt;::CalcInCol::value&gt;&amp;)"
+                  moduleName = "AiMovingObjectClassifier"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/o_0/Documents/programmering/iSeeYou/AiMovingObjectClassifier/conv_net.hpp"
+                  timestampString = "508447580.714469"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "613"
+                  endingLineNumber = "613"
+                  offsetFromSymbolStart = "1157">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "void col2im&lt;ConvNetLayer&lt;ConvHyperParam&lt;32, 3, 3, 10, 1, 1, 27, 9, 34, 102, 27, 32, 1024, 320&gt; &gt; &gt;(Eigen::Matrix&lt;double, -1, -1, 0, -1, -1&gt;&amp;, Eigen::Matrix&lt;double, ConvNetLayer&lt;ConvHyperParam&lt;32, 3, 3, 10, 1, 1, 27, 9, 34, 102, 27, 32, 1024, 320&gt; &gt;::CalcInRow::value, ConvNetLayer&lt;ConvHyperParam&lt;32, 3, 3, 10, 1, 1, 27, 9, 34, 102, 27, 32, 1024, 320&gt; &gt;::CalcInCol::value, ((Eigen::StorageOptions)0) | ((((ConvNetLayer&lt;ConvHyperParam&lt;32, 3, 3, 10, 1, 1, 27, 9, 34, 102, 27, 32, 1024, 320&gt; &gt;::CalcInRow::value) == (1)) &amp;&amp; ((ConvNetLayer&lt;ConvHyperParam&lt;32, 3, 3, 10, 1, 1, 27, 9, 34, 102, 27, 32, 1024, 320&gt; &gt;::CalcInCol::value) != (1))) ? ((Eigen::StorageOptions)1) : ((((ConvNetLayer&lt;ConvHyperParam&lt;32, 3, 3, 10, 1, 1, 27, 9, 34, 102, 27, 32, 1024, 320&gt; &gt;::CalcInCol::value) == (1)) &amp;&amp; ((ConvNetLayer&lt;ConvHyperParam&lt;32, 3, 3, 10, 1, 1, 27, 9, 34, 102, 27, 32, 1024, 320&gt; &gt;::CalcInRow::value) != (1))) ? ((Eigen::StorageOptions)0) : ((Eigen::StorageOptions)0))), ConvNetLayer&lt;ConvHyperParam&lt;32, 3, 3, 10, 1, 1, 27, 9, 34, 102, 27, 32, 1024, 320&gt; &gt;::CalcInRow::value, ConvNetLayer&lt;ConvHyperParam&lt;32, 3, 3, 10, 1, 1, 27, 9, 34, 102, 27, 32, 1024, 320&gt; &gt;::CalcInCol::value&gt;&amp;)"
+                  moduleName = "AiMovingObjectClassifier"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/o_0/Documents/programmering/iSeeYou/AiMovingObjectClassifier/conv_net.hpp"
+                  timestampString = "508447580.717469"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "613"
+                  endingLineNumber = "613"
+                  offsetFromSymbolStart = "1157">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

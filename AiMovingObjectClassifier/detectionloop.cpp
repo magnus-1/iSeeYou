@@ -26,12 +26,26 @@ void mainLoop()
 //    ConvHyperParam<32, 3, 3, 3, 1,1>
     //int ImageDim,int ImageDepth,int FilterDim1,int FilterCount1, int Stride1,int Padding1 = 0,
     // sets the hyperparm for the cnn
+//    ConvNet<
+//    ConvHyperParam<32, 3, 3, 12, 1,1>
+//    ,ConvHyperParam<32, 12, 3, 5, 1,1>
+//    ,ConvHyperParam<32, 5, 3, 3, 1,1>
+//    ,ConvHyperParam<32, 3, 3, 4, 1,1>
+//    > convNet;
+    
+//    ConvNet<
+//    ConvHyperParam<32, 3, 3, 10, 1,1>,
+//    ConvHyperParam<32, 10, 3, 5, 1,1>,
+//    ConvHyperParam<32, 5, 3, 5, 1,1>,
+//    ConvHyperParam<32, 5, 12, 1, 6,2>
+//    > convNet;
     ConvNet<
-    ConvHyperParam<32, 3, 3, 12, 1,1>
-    ,ConvHyperParam<32, 12, 3, 5, 1,1>
-    ,ConvHyperParam<32, 5, 3, 3, 1,1>
-    ,ConvHyperParam<32, 3, 3, 4, 1,1>
+    ConvHyperParam<32, 3, 3, 10, 1,1>,
+    ConvHyperParam<32, 10, 3, 5, 1,1>,
+    ConvHyperParam<32, 5, 5, 5, 1,0>,
+    ConvHyperParam<28, 5, 12, 1, 6,2>
     > convNet;
+    
     // for now it randomize the weigth, add loading here
     convNet.randomizeAll();
     // creates the learning module and set the convnet
@@ -59,6 +73,7 @@ void mainLoop()
     //    camera.open(0);
     feed.readFrame(lastSample->frame);
     cv::cvtColor(lastSample->frame, lastSample->grayScale , cv::COLOR_BGR2GRAY);
+    // cv::COLOR_GRAY2BGR
     ObjectImages storage(1,100,32,32,lastSample->frame.type());
     cv::Mat outputFrame = cv::Mat::zeros(FRAME_WIDTH, FRAME_HIGHT, lastSample->frame.type());
     //    cv::Mat eigenTest = cv::Mat::zeros(32, 32, CV_32FC3);
@@ -78,12 +93,17 @@ void mainLoop()
     target.y += convNet.layer4.getOutputRow();
 
     cv::Mat mosaic = cv::Mat::zeros(32*10, 32*10, lastSample->frame.type());
+    
+//    classfier::training_conf conf_conv{1,0.08,20,0.001,0.001, 1.00,1.0};
+    classfier::training_conf  conf_conv{310,0.08,20,0.0001,0.001, 1.00,1.0};
+    learningModule.setConfigurationConv(conf_conv);
     // connect storage
     learningModule.setStorage(&storage);
     
     learningModule.debug_show_layeroutput = settings.show_debug_conv_layer;
     
     int frameCount = 0;
+    int epochCounter = 0;
     while (runloop) {
         // read from video stream
         feed.readFrame(currentSample->frame);
@@ -97,18 +117,27 @@ void mainLoop()
         areaTracker.updateDetectedObjects(frameCount, objects);
         // the output frame is the one we draw on , so let it be a copy
         currentSample->frame.copyTo(outputFrame);
-        paintTrackingRects(outputFrame, areaTracker.getTrackedAreas(), frameCount);
         
         // storage converts all relevent regions and convert them into a 32 by 32 by 3 image
         storage.storeframe(currentSample->frame, areaTracker.getTrackedAreas(), frameCount, 0);
         if(storage.bufferIsFull()){
             storage.fillMosaic(mosaic, 10, 10);
+            if(settings.training_conv_on) {
+                storage.printStorageInfo();
+                storage.interleveRegionId();
+                learningModule.trainEpoch(1, 10);
+                epochCounter++;
+            }
         }
         
         learningModule.debug_show_layeroutput = settings.show_debug_conv_layer;
         // start the forward pass and train on it
-        learningModule.trainlastImg();
-        
+        //learningModule.trainlastImg();
+        IdentificationResult_t result = learningModule.checkLastImg();
+        if (result.prevId >= 0 && result.probability > 0.10 && epochCounter > 0 ) {
+            areaTracker.updateRegion(result.prevId, result.resultId, result.probability);
+        }
+        paintTrackingRects(outputFrame, areaTracker.getTrackedAreas(), frameCount);
 //        storage.fillEigenTest(eigenTest);
 //        learningModule.fillMat(eigenTest1,1);
 //        learningModule.fillMat(eigenTest2,2);

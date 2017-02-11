@@ -20,6 +20,7 @@ class DetectedArea
 {
 private:
     int m_classId = -1;
+    double m_class_prob = -1.0;
 public:
     int frameDetectionId; // when this area was detected (at what frame)
     int prevFrameId = 0;
@@ -36,12 +37,18 @@ public:
             frameDetectionId = frameId;
         }
     }
+    void setClassProbability(double probability) {
+        m_class_prob = probability;
+    }
     
+    double getClassProbability() const {
+        return m_class_prob;
+    }
     void setNewClassId(int classId) {
         m_classId = classId;
     }
     
-    int getClassId() {
+    int getClassId() const {
         return m_classId;
     }
 };
@@ -69,6 +76,8 @@ public:
     }
     
     void purgeStaleAreas(int ageThreshold,int currentFrameId);
+    
+    void updateRegion(int regionId,int classId,double result_prob);
 };
 
 #endif /* detection_area_hpp */

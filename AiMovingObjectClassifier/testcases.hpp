@@ -10,5 +10,5 @@
 #define testcases_hpp
 
 void test_nn_training();
-
+void test_conv_training();
 #endif /* testcases_hpp */

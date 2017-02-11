@@ -21,6 +21,7 @@
 // and its region id
 struct LabelImage {
     int regionId = -1;
+    int classId = -1;
     cv::Mat image = cv::Mat();
 };
 
@@ -41,6 +42,7 @@ class ObjectImages
     const int imageDimH;
     const int imageDimW;
     bool madeTheLoop = false;
+    int bufferCapacity = 0;
     cv::Mat eigenTest;
     cv::Mat eigenTest2;
 public:
@@ -68,10 +70,26 @@ public:
 //        eigenTest2 = cv::Mat::zeros(32,32,CV_64FC3);
         eigenTest2 = cv::Mat::zeros(32,96,CV_64FC1);
     }
+    
+    ObjectImages(ObjectImages& other) : regionId(other.regionId), max_size(other.max_size),imageDimH(other.imageDimH),imageDimW(other.imageDimW)
+    {
+        imagebuffer.reserve(max_size);
+        for(int i = 0; i < max_size;++i)
+        {
+            //            imagebuffer.push_back(cv::Mat());
+            imagebuffer.push_back(other.imagebuffer[i]);
+        }
+        eigenTest = cv::Mat::zeros(32,32,CV_64FC3);
+        //        eigenTest2 = cv::Mat::zeros(32,32,CV_64FC3);
+        eigenTest2 = cv::Mat::zeros(32,96,CV_64FC1);
+    }
 private:
+
     
     void imageResize(const cv::Mat& srcframe, const cv::Rect objectLocation,cv::Mat& dstframe);
 public:
+    
+    void interleveRegionId();
 
     /**
      stores resized image for area in the imagebuffer if it has been updated in the last frame -+ wiggle
@@ -105,6 +123,11 @@ public:
         return madeTheLoop;
     }
     
+    
+    /**
+     Prints number of objects, current index, and prints out the images id
+     */
+    void printStorageInfo();
     
     /**
      filles the output image with all the stored  images in a grid
@@ -189,6 +212,38 @@ public:
         output2 = b;
 
         return true;
+    }
+    
+    int getImgAt(int imgLoc,int& imgId,int& classId,Eigen::Matrix<double,32,96>& output2)
+    {
+        
+        if(imagebuffer.empty() || currentIdx < 0 || imgLoc >= bufferCapacity) return -1;
+        //        cv::cv2eigen(
+        cv::Size targetSize(32,32);
+        cv::Point target(0,0);
+        Eigen::Matrix<double,32,96,0,32,96> output;
+        output.setZero();
+        
+        imgId = imagebuffer[imgLoc].regionId;
+        classId = imagebuffer[imgLoc].classId;
+        cv::Rect dstRect = cv::Rect(target,targetSize);
+        cv::Mat src = imagebuffer[imgLoc].image;
+        cv::Mat img = src(dstRect);
+        
+        img.convertTo(eigenTest, CV_64F);
+        
+        if(img.empty())
+        {
+            std::cout<<"\ngetLastImg empty\n";
+            return false;
+        }
+        
+        
+        Eigen::Map<Eigen::Matrix<double,32,96,Eigen::RowMajor>> b((double*)eigenTest.data + 0);
+        
+        output2 = b;
+        
+        return currentIdx;
     }
     
     

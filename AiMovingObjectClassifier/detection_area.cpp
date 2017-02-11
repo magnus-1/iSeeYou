@@ -152,3 +152,23 @@ void CameraAreaTracker::purgeStaleAreas(int ageThreshold,int currentFrameId)
                                          }),std::end(changeTracking));
     
 }
+
+void CameraAreaTracker::updateRegion(int regionId,int classId,double result_prob)
+{
+    std::for_each(std::begin(changeTracking), std::end(changeTracking),
+                  [regionId,classId,result_prob](DetectedArea& da){
+                      if (da.regionId == regionId) {
+                          da.setNewClassId(classId);
+                          da.setClassProbability(result_prob);
+                      }
+                  });
+    
+
+////    .erase( std::remove_if(std::begin(changeTracking),
+//                                         std::end(changeTracking),
+//                                         [ageThreshold, currentFrameId](DetectedArea& da){
+//                                             return ageThreshold < currentFrameId - da.frameDetectionId;
+//                                             
+//                                         }),std::end(changeTracking));
+
+}

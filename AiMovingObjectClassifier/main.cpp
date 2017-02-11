@@ -12,16 +12,23 @@
 #include "detectionloop.hpp"
 #include "testcases.hpp"
 #include <string>
+#include <Eigen/core>
 
 
 int main(int argc, const char * argv[]) {
 //    // insert code here...
     std::cout << "argc "<<argc <<"\n";
     std::cout << "cv version = " <<CV_VERSION<<"\n";
+    std::cout << "eigen version = " <<EIGEN_WORLD_VERSION<<"."<<EIGEN_MAJOR_VERSION<<"."<<EIGEN_MINOR_VERSION<<"\n";
+//
     if (argc > 1) {
         std::cout << " argv "<<argv[1] <<"\n";
         if(std::strcmp("-testcase1", argv[1]) == 0) {
             test_nn_training();
+            return 0;
+        }
+        if(std::strcmp("-testcase2", argv[1]) == 0) {
+            test_conv_training();
             return 0;
         }
     }
@@ -35,6 +42,7 @@ int main(int argc, const char * argv[]) {
     std::cout<<"    s = toggle object sample frame\n";
     std::cout<<"    r = toggle object resize sample frame\n";
     std::cout<<"    L = toggle debug conv layer output \n";
+    std::cout<<"    C = toggle conv training \n";
     std::cout<<"    x/esc = quit\n";
     mainLoop();
     return 0;

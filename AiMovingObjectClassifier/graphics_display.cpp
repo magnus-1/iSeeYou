@@ -64,8 +64,15 @@ void paintTrackingRects(cv::Mat& cameraframe, const std::vector<DetectedArea>& o
     for(auto& r : objects) {
         int strength = 255 - (r.frameDetectionId - frameCount);
         strength = strength < 50 ? 50 : strength;
-        std::string str = "id: " + std::to_string(r.regionId);
-        cv::putText(cameraframe,str, r.area.tl(), 1, 2.0, cv::Scalar(255, 255, 255));
+        std::string str1 = "id: " + std::to_string(r.regionId);
+        cv::putText(cameraframe,str1, r.area.tl(), 1, 2.0, cv::Scalar(255, 255, 255));
+        if (r.getClassProbability() > 0.0) {
+            std::string str2 = "classid: " + std::to_string(r.getClassId()) ;
+            std::string str3 ="Prob " +  std::to_string(r.getClassProbability());
+            cv::putText(cameraframe,str2,cv::Point( r.area.tl().x,r.area.br().y - 5), 1, 1.0, cv::Scalar(255, 255, 255));
+            cv::putText(cameraframe,str3,cv::Point( r.area.tl().x,r.area.br().y + 10), 1, 1.0, cv::Scalar(255, 255, 255));
+        }
+
         if (r.isSuperRegion) {
             cv::rectangle(cameraframe, r.area, cv::Scalar(0, 0, strength),2);
         }else if(r.isSubRegion) {

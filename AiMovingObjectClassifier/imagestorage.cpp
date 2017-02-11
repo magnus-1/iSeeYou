@@ -67,14 +67,43 @@ void ObjectImages::storeframe(const cv::Mat& frame,const DetectedArea& detectAre
 {
     const cv::Rect objectLocation = detectArea.area;
     currentIdx++;
+    bufferCapacity = (bufferCapacity < currentIdx) ? currentIdx : bufferCapacity;
     // ring buffer, old pics gets overriden
     if (currentIdx >= max_size) {
         currentIdx = 0;
         madeTheLoop = true;
+        bufferCapacity = max_size;
     }
     imageResize(frame, objectLocation, imagebuffer[currentIdx].image);
     imagebuffer[currentIdx].regionId = detectArea.regionId;
+    imagebuffer[currentIdx].classId = detectArea.getClassId();
     
+}
+
+
+void ObjectImages::interleveRegionId()
+{
+    std::vector<LabelImage> tmpBuffer;
+    tmpBuffer.reserve(max_size);
+    for(int i = 0; i < max_size;++i)
+    {
+        //            imagebuffer.push_back(cv::Mat());
+        tmpBuffer.push_back(imagebuffer[i]);
+    }
+    std::sort(std::begin(tmpBuffer), std::end(tmpBuffer), [](LabelImage& a,LabelImage& b){return a.regionId < b.regionId;});
+    auto dest = std::begin(imagebuffer);
+    auto dest_end = std::end(imagebuffer);
+    std:size_t stepSize = imagebuffer.size() / 10;
+    for (int i = 0; i < stepSize; ++i) {
+        auto tmp = std::begin(tmpBuffer) + i;
+        auto tmp_end = std::end(tmpBuffer);
+        while (dest < dest_end && tmp < tmp_end) {
+            *dest = *tmp;
+            ++dest;
+            tmp = tmp + stepSize;
+        }
+    }
+    printStorageInfo();
 }
 
 /**
@@ -101,7 +130,19 @@ void ObjectImages::storeframe(const cv::Mat& frame,
     
 }
 
-
+/**
+ Prints number of objects, current index, and prints out the images id
+ */
+void ObjectImages::printStorageInfo()
+{
+    std::cout<<"\nCapacity: " << bufferCapacity << " currentIdx: " << currentIdx <<"\n";
+    int loc = 0;
+    for(auto& imglabel : imagebuffer) {
+        std::cout<<"\t at: " <<loc<<"\timglabel: "<<imglabel.regionId<<"" <<"\n";
+        loc++;
+    }
+    std::cout<<"\n";
+}
 
 
 
